@@ -16,6 +16,9 @@ public static class Company {
     }
     public static void Tick() {
         //substract all running costs
+        foreach (Ship ship in ownedShips) {
+            curMoney -= ship.runningCosts;
+        }
         //advance all accepted contracts
     }
 }
