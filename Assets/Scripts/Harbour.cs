@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-public class Harbour
-{
+public class Harbour {
     public String name;
 }

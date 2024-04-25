@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class CommandInterpreter
-{
-    public static String interprete(String input)
-    {
+public static class CommandInterpreter {
+    public static String interprete(String input) {
         input = input.Remove(0, 1); // remove > at the start
         String[] info = input.Split(' ');
         switch (info[0]) //check name of command
@@ -30,6 +28,5 @@ public static class CommandInterpreter
             default:
                 return "Unkown command, use help to get a list of all commands";
         }
-        return " Multi \n  Line Return";
     }
 }
