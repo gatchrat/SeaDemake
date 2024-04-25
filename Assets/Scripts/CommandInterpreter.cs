@@ -25,6 +25,20 @@ public static class CommandInterpreter {
                 pause - pauses the game, commands are still enabled
                 resume - un-pauses
                 exit - closes the game";
+            case "resume":
+                Clock.Instance.startClock();
+                return "Un-paused";
+            case "pause":
+                Clock.Instance.stopClock();
+                return "paused";
+            case "exit":
+#if UNITY_STANDALONE
+                Application.Quit();
+#endif
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#endif
+                return "exiting...";
             default:
                 return "Unkown command, use help to get a list of all commands";
         }

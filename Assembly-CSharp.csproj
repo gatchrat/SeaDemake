@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\Goods.cs" />
     <Compile Include="Assets\Scripts\Ship.cs" />
     <Compile Include="Assets\Scripts\GameMaster.cs" />
+    <Compile Include="Assets\Scripts\Clock.cs" />
     <Compile Include="Assets\Scripts\Company.cs" />
     <Compile Include="Assets\Scripts\Contract.cs" />
     <Compile Include="Assets\Scripts\CMD.cs" />
