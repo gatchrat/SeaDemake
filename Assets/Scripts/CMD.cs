@@ -39,6 +39,9 @@ public class CMD : MonoBehaviour {
 
         if (evt.type == EventType.KeyDown) {
             if (evt.keyCode == KeyCode.Backspace) {
+                if (curLine != ">") {
+                    curLine = curLine.Remove(curLine.Length - 1);
+                }
                 return;
             }
             else if (evt.keyCode == KeyCode.Return) {
