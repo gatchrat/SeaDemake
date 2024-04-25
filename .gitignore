@@ -1,0 +1,10 @@
+*.meta
+Packages/
+TextMesh pro/
+Artifacts/
+Library/
+logs/
+Temp/
+UserSettings/
+ProjectSettings/
+.vscode/
