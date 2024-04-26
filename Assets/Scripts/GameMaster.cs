@@ -13,6 +13,10 @@ public class GameMaster : MonoBehaviour {
         Company.acceptedContracts = new List<Contract>();
         Company.refreshAvailableShips();
         Company.refreshAvailableContracts();
+        Company.allHarbours = new List<Harbour>();
+        Company.allHarbours.Add(new Harbour(new Vector2Int(0, 0)));
+        Company.allHarbours.Add(new Harbour(new Vector2Int(0, 0)));
+        Company.allHarbours.Add(new Harbour(new Vector2Int(0, 0)));
         Clock.Instance.tick += Tick;
     }
     void Tick() {
