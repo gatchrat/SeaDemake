@@ -31,6 +31,11 @@ public static class CommandInterpreter {
             case "pause":
                 Clock.Instance.stopClock();
                 return "paused";
+            case "speed":
+                if (info.Length != 2) {
+                    return "Missing or too many parameters";
+                }
+                return Clock.Instance.setSpeed(info[1]);
             case "buy":
                 if (info.Length != 3) {
                     return "Missing or too many parameters";

@@ -19,13 +19,20 @@ public class Clock : MonoBehaviour {
     void Start() {
         curTimer = timePerTickCur;
     }
-    public Boolean setSpeed(int speed) {
-        if (speed < timeSteps.Length && speed >= 0) {
-            timePerTickCur = timeSteps[curTimeStepIndex];
-            curTimer = timePerTickCur;
-            return true;
+    public String setSpeed(String speedString) {
+        int speed = 0;
+        try {
+            speed = Int32.Parse(speedString);
         }
-        return false;
+        catch (Exception e) {
+            return "Not a valid Speed";
+        }
+        if (speed < timeSteps.Length && speed >= 0) {
+            timePerTickCur = timeSteps[speed];
+            curTimer = timePerTickCur;
+            return "Speed changed";
+        }
+        return "Not a valid Speed";
     }
     public void startClock() {
         started = true;

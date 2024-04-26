@@ -27,10 +27,10 @@ public class CMD : MonoBehaviour {
             }
             History = newHistory;
 
-            text.text = History + curLine;
+            text.text = History + curLine + '_';
         }
         else {
-            text.text = History + "\n" + curLine;
+            text.text = History + "\n" + curLine + '_';
         }
 
     }
