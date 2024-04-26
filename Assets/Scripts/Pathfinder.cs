@@ -13,7 +13,6 @@ public class Pathfinder : MonoBehaviour {
     //(336,189)
     Node[,] map = new Node[336, 189];
     void Start() {
-        Debug.Log(logicToPixelPos(new Vector2Int(120, 10)));
         List<Vector2Int> path = new List<Vector2Int>();
         for (int i = 0; i < 336; i++) {
             for (int y = 0; y < 189; y++) {
@@ -39,8 +38,15 @@ public class Pathfinder : MonoBehaviour {
     public static float OctileDistance(Vector2Int from, Vector2Int to) {
         int dx = Mathf.Abs(to.x - from.x);
         int dy = Mathf.Abs(to.y - from.y);
-        // return Mathf.Max(dx, dy) + (Mathf.Sqrt(2) - 1) * Mathf.Min(dx, dy);
+        //return Mathf.Max(dx, dy) + (Mathf.Sqrt(2) - 1) * Mathf.Min(dx, dy);
         return Vector2Int.Distance(from, to);
+    }
+    float heuristic(Vector2Int from, Vector2Int to) {
+        int xDiff = Math.Abs(from.x - to.x);
+        int yDiff = Math.Abs(from.y - to.y);
+        float heur = Math.Min(xDiff, yDiff) * 1.5f;
+        heur += (Math.Max(xDiff, yDiff) - Math.Min(xDiff, yDiff));
+        return heur + 3f;
     }
     public List<Vector2Int> findPath(Vector2Int start, Vector2Int end) {
         if (!map[start.x, start.y].isWater || !map[end.x, end.y].isWater) {
@@ -53,7 +59,7 @@ public class Pathfinder : MonoBehaviour {
                 map[i, y].pathToHere = new List<Vector2Int>();
                 map[i, y].visited = false;
                 //map[i, y].guestimate = Math.Abs(i - end.x) + Math.Abs(y - end.y);
-                map[i, y].guestimate = OctileDistance(new Vector2Int(i, y), end);
+                map[i, y].guestimate = heuristic(new Vector2Int(i, y), end);
             }
         }
         List<Node> backlog = new List<Node>();
@@ -62,12 +68,13 @@ public class Pathfinder : MonoBehaviour {
         //add neighboors
         foreach (Node neighbor in getNeighboors(map[start.x, start.y])) {
             if (neighbor.isWater && !neighbor.visited) {
-                if (neighbor.distance > map[start.x, start.y].distance - 1) {
-                    neighbor.distance = map[start.x, start.y].distance + 1;
+                if (neighbor.distance > map[start.x, start.y].distance - OctileDistance(map[start.x, start.y].pos, neighbor.pos)) {
+                    neighbor.distance = map[start.x, start.y].distance + OctileDistance(map[start.x, start.y].pos, neighbor.pos);
                     //workaround to not pass the list itself but a copy
                     neighbor.pathToHere = map[start.x, start.y].pathToHere.GetRange(0, map[start.x, start.y].pathToHere.Count); ;
                     neighbor.pathToHere.Add(map[start.x, start.y].pos);
                     if (!backlog.Contains(neighbor)) {
+                        //Debug.Log("added at start " + neighbor.pos + "with heuristic " + neighbor.guestimate + " and distance so far " + neighbor.distance + "score:" + (neighbor.guestimate + neighbor.distance));
                         backlog.Add(neighbor);
                     }
 
@@ -82,6 +89,7 @@ public class Pathfinder : MonoBehaviour {
                     neighbor.pathToHere = map[start.x, start.y].pathToHere.GetRange(0, map[start.x, start.y].pathToHere.Count); ;
                     neighbor.pathToHere.Add(map[start.x, start.y].pos);
                     if (!backlog.Contains(neighbor)) {
+                        //Debug.Log("added at start " + neighbor.pos + "with heuristic " + neighbor.guestimate + " and distance so far " + neighbor.distance + "score:" + (neighbor.guestimate + neighbor.distance));
                         backlog.Add(neighbor);
                     }
 
@@ -91,14 +99,24 @@ public class Pathfinder : MonoBehaviour {
         bool found = false;
         while (backlog.Count > 0 && !found) {
             float best = 999999;
+            float bestPath = 999999;
             Node bestNode = null;
             foreach (Node node in backlog) {
+                // Debug.Log("checking" + node.pos + "with score" + (node.distance + node.guestimate));
+                if (node.distance + node.guestimate == best & node.distance < bestPath) {
+                    best = node.distance + node.guestimate;
+                    bestNode = node;
+                    bestPath = node.distance;
+                }
                 if (node.distance + node.guestimate < best) {
                     best = node.distance + node.guestimate;
                     bestNode = node;
+                    bestPath = node.distance;
                 }
+
             }
-            backlog.Remove(bestNode);
+            // Debug.Log("Investigating " + bestNode.pos + "with heuristic " + bestNode.guestimate + " and distance so far " + bestNode.distance + "score:" + (bestNode.guestimate + bestNode.distance));
+
 
             bestNode.visited = true;
             if (bestNode.pos.x == end.x && bestNode.pos.y == end.y) {
@@ -108,8 +126,8 @@ public class Pathfinder : MonoBehaviour {
             }
             foreach (Node neighbor in getNeighboors(bestNode)) {
                 if (neighbor.isWater && !neighbor.visited) {
-                    if (neighbor.distance > bestNode.distance - 1) {
-                        neighbor.distance = bestNode.distance + 1;
+                    if (neighbor.distance > bestNode.distance + OctileDistance(bestNode.pos, neighbor.pos)) {
+                        neighbor.distance = bestNode.distance + OctileDistance(bestNode.pos, neighbor.pos);
                         //workaround to not pass the list itself but a copy
                         neighbor.pathToHere = bestNode.pathToHere.GetRange(0, bestNode.pathToHere.Count); ;
                         neighbor.pathToHere.Add(bestNode.pos);
@@ -122,7 +140,7 @@ public class Pathfinder : MonoBehaviour {
             }
             foreach (Node neighbor in getdiagonalNeighboors(bestNode)) {
                 if (neighbor.isWater && !neighbor.visited) {
-                    if (neighbor.distance > bestNode.distance - OctileDistance(bestNode.pos, neighbor.pos)) {
+                    if (neighbor.distance > bestNode.distance + OctileDistance(bestNode.pos, neighbor.pos)) {
                         neighbor.distance = bestNode.distance + OctileDistance(bestNode.pos, neighbor.pos);
                         //workaround to not pass the list itself but a copy
                         neighbor.pathToHere = bestNode.pathToHere.GetRange(0, bestNode.pathToHere.Count); ;
@@ -134,6 +152,7 @@ public class Pathfinder : MonoBehaviour {
                     }
                 }
             }
+            backlog.Remove(bestNode);
 
         }
         Debug.Log("couldnt find any path");
