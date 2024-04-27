@@ -16,7 +16,8 @@ public class Ship {
     //current dock and target
     public Harbour dock;
     public Harbour targetDock;
-    public List<Vector2Int> curPath = null;
+    private List<Vector2Int> curPath = null;
+    private List<GameObject> curPathObjects = null;
     public bool isMoving() {
         return dock == null;
     }
@@ -25,10 +26,19 @@ public class Ship {
         price = (int)(standardPrice * (UnityEngine.Random.Range(60f, 140f) / 100f));
         Debug.Log("ship" + name);
     }
+    public void setPath(List<Vector2Int> newPath) {
+        curPath = newPath;
+        foreach (GameObject pathPiece in curPathObjects) {
+            GameObject.Destroy(pathPiece);
+        }
+        curPathObjects = Pathfinder.spawnPieces(curPath);
+    }
     public void Tick() {
         if (curPath != null) {
             pos = curPath[0];
             curPath.RemoveAt(0);
+            GameObject.Destroy(curPathObjects[0]);
+            curPathObjects.RemoveAt(0);
             if (curPath.Count == 0) {
                 curPath = null;
                 dock = targetDock;
@@ -56,6 +66,12 @@ public class Ship {
                     Company.completeContract(contract);
                 }
             }
+        }
+    }
+    public void scrap() {
+        //remove all graphics
+        foreach (GameObject pathPiece in curPathObjects) {
+            GameObject.Destroy(pathPiece);
         }
     }
 }

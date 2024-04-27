@@ -99,7 +99,7 @@ public static class Company {
             return "No Harbour with that Name found";
         }
         toSend.targetDock = toDock;
-        toSend.curPath = Pathfinder.findPath(toSend.pos, toDock.pos);
+        toSend.setPath(Pathfinder.findPath(toSend.pos, toDock.pos));
         companyUiUpdate.Invoke();
         return "Ship successfully send";
 
