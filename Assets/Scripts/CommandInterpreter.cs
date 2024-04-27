@@ -25,6 +25,11 @@ public static class CommandInterpreter {
                 pause - pauses the game, commands are still enabled
                 resume - un-pauses
                 exit - closes the game";
+            case "send":
+                if (info.Length != 3) {
+                    return "Missing or too many parameters";
+                }
+                return Company.sendShip(info[1], info[2]);
             case "resume":
                 Clock.Instance.startClock();
                 return "Un-paused";

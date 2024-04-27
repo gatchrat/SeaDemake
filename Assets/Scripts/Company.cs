@@ -79,5 +79,30 @@ public static class Company {
         curMoney -= toComplete.penalty;
         acceptedContracts.Remove(toComplete);
     }
+    public static String sendShip(String shipname, String harbourName) {
+        Ship toSend = null;
+        foreach (Ship ship in availableShips) {
+            if (ship.name == shipname) {
+                toSend = ship;
+            }
+        }
+        if (toSend == null) {
+            return "No Ship with that Name found";
+        }
+        Harbour toDock = null;
+        foreach (Harbour harbour in allHarbours) {
+            if (harbour.name == harbourName) {
+                toDock = harbour;
+            }
+        }
+        if (toDock == null) {
+            return "No Harbour with that Name found";
+        }
+        toSend.targetDock = toDock;
+        toSend.curPath = Pathfinder.findPath(toSend.pos, toDock.pos);
+        companyUiUpdate.Invoke();
+        return "Ship successfully send";
+
+    }
 }
 

@@ -11,7 +11,7 @@ public class Pathfinder : MonoBehaviour {
     // Start is called before the first frame update
     //(x,y), (0,0) is top left
     //(336,189)
-    Node[,] map = new Node[336, 189];
+    static Node[,] map = new Node[336, 189];
     void Start() {
         List<Vector2Int> path = new List<Vector2Int>();
         for (int i = 0; i < 336; i++) {
@@ -41,14 +41,14 @@ public class Pathfinder : MonoBehaviour {
         //return Mathf.Max(dx, dy) + (Mathf.Sqrt(2) - 1) * Mathf.Min(dx, dy);
         return Vector2Int.Distance(from, to);
     }
-    float heuristic(Vector2Int from, Vector2Int to) {
+    static float heuristic(Vector2Int from, Vector2Int to) {
         int xDiff = Math.Abs(from.x - to.x);
         int yDiff = Math.Abs(from.y - to.y);
         float heur = Math.Min(xDiff, yDiff) * 1.5f;
         heur += (Math.Max(xDiff, yDiff) - Math.Min(xDiff, yDiff));
         return heur + 3f;
     }
-    public List<Vector2Int> findPath(Vector2Int start, Vector2Int end) {
+    public static List<Vector2Int> findPath(Vector2Int start, Vector2Int end) {
         if (!map[start.x, start.y].isWater || !map[end.x, end.y].isWater) {
             Debug.Log("Cant path on land");
         }
@@ -158,7 +158,7 @@ public class Pathfinder : MonoBehaviour {
         Debug.Log("couldnt find any path");
         return null;
     }
-    private List<Node> getNeighboors(Node n) {
+    private static List<Node> getNeighboors(Node n) {
         Vector2Int start = n.pos;
         List<Node> backlog = new List<Node>();
         if (start.x < 335) {
@@ -189,7 +189,7 @@ public class Pathfinder : MonoBehaviour {
         }
         return backlog;
     }
-    private List<Node> getdiagonalNeighboors(Node n) {
+    private static List<Node> getdiagonalNeighboors(Node n) {
         Vector2Int start = n.pos;
         List<Node> backlog = new List<Node>();
         List<Vector2Int> backlogv = new List<Vector2Int>();
