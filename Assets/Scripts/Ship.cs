@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Ship {
     public String name;
@@ -11,7 +13,10 @@ public class Ship {
     public int runningCosts = 5;
     public int price = 0;
     public Vector2Int pos;
+    //current dock and target
     public Harbour dock;
+    public Harbour targetDock;
+    public List<Vector2Int> curPath = null;
     public bool isMoving() {
         return dock == null;
     }
@@ -19,5 +24,38 @@ public class Ship {
         name = UnityEngine.Random.Range(0, 100) + "";
         price = (int)(standardPrice * (UnityEngine.Random.Range(60f, 140f) / 100f));
         Debug.Log("ship" + name);
+    }
+    public void Tick() {
+        if (curPath != null) {
+            pos = curPath[0];
+            curPath.RemoveAt(0);
+            if (curPath.Count == 0) {
+                curPath = null;
+                dock = targetDock;
+                targetDock = null;
+                unloadContracts(Company.acceptedContracts);
+            }
+        }
+    }
+    private void unloadContracts(List<Contract> contracts) {
+        foreach (Contract contract in contracts) {
+            if (contract.targetHarbour == dock) {
+                for (int i = 0; i < contract.toDeliverGoods.Count; i++) {
+                    for (int x = 0; x < content.Count; x++) {
+                        if (contract.toDeliverGoods[i].type == content[x].type) {
+                            content.Remove(content[x]);
+                            contract.deliverdGoods.Add(contract.toDeliverGoods[i]);
+                            contract.toDeliverGoods.Remove(contract.toDeliverGoods[i]);
+                            x--;
+                            i--;
+
+                        }
+                    }
+                }
+                if (contract.toDeliverGoods.Count == 0) {
+                    Company.completeContract(contract);
+                }
+            }
+        }
     }
 }

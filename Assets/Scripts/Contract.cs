@@ -7,5 +7,6 @@ public class Contract {
     public int reward;
     public int penalty;
     public int daysToComplete;
-    public List<Goods> toDeliverGoods;
+    public List<Goods> toDeliverGoods = new List<Goods>();
+    public List<Goods> deliverdGoods = new List<Goods>();
 }

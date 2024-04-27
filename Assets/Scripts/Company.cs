@@ -26,7 +26,16 @@ public static class Company {
         //substract all running costs
         foreach (Ship ship in ownedShips) {
             curMoney -= ship.runningCosts;
+            ship.Tick();
         }
+        for (int i = 0; i < acceptedContracts.Count; i++) {
+            acceptedContracts[i].daysToComplete--;
+            if (acceptedContracts[i].daysToComplete < 0) {
+                failContract(acceptedContracts[i]);
+            }
+            i--;
+        }
+
         companyUiUpdate.Invoke();
         //advance all accepted contracts
     }
@@ -61,6 +70,14 @@ public static class Company {
             companyUiUpdate.Invoke();
             return "Ship successfully aquired";
         }
+    }
+    public static void completeContract(Contract toComplete) {
+        curMoney += toComplete.reward;
+        acceptedContracts.Remove(toComplete);
+    }
+    public static void failContract(Contract toComplete) {
+        curMoney -= toComplete.penalty;
+        acceptedContracts.Remove(toComplete);
     }
 }
 
