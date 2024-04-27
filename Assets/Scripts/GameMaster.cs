@@ -12,6 +12,8 @@ public class GameMaster : MonoBehaviour {
     public Transform availableShipParent;
     public Transform ownedShipParent;
     public GameObject availableShipPrefab;
+    public GameObject ownedShipPrefab;
+    private List<GameObject> ownedShipsGUI = new List<GameObject>();
     private List<GameObject> availableShipsGUI = new List<GameObject>();
     void Start() {
         Company.curMoney = 10000;
@@ -26,6 +28,7 @@ public class GameMaster : MonoBehaviour {
         Company.allHarbours.Add(new Harbour(new Vector2Int(0, 0)));
         Company.allHarbours.Add(new Harbour(new Vector2Int(0, 0)));
         availableShipPrefab.SetActive(false);
+        ownedShipPrefab.SetActive(false);
     }
     void Tick() {
         curDay++;
@@ -42,7 +45,44 @@ public class GameMaster : MonoBehaviour {
         moneyText.text = "Capital: " + Company.curMoney.ToString() + "$";
         timeText.text = "Day " + curDay.ToString();
         updateAvailableShips();
+        updateOwnedShips();
 
+    }
+    private void updateOwnedShips() {
+        List<String> ownedShips = new List<string>();
+        foreach (Ship ship in Company.ownedShips) {
+            ownedShips.Add(ship.name);
+        }
+        //check for removal
+        List<String> ownedShipsGUINames = new List<string>();
+        for (int i = 0; i < ownedShipsGUI.Count; i++) {
+            GameObject item = ownedShipsGUI[i];
+            String name = item.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text;
+            ownedShipsGUINames.Add(name);
+            if (!ownedShips.Contains(name)) {
+                ownedShipsGUI.Remove(item);
+                Destroy(item);
+                i--;
+            }
+        }
+
+        foreach (Ship ship in Company.ownedShips) {
+            if (!ownedShipsGUINames.Contains(ship.name)) {
+                GameObject newGUI = GameObject.Instantiate(ownedShipPrefab);
+                ownedShipsGUI.Add(newGUI);
+                newGUI.SetActive(true);
+                newGUI.transform.SetParent(ownedShipParent);
+                newGUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ship.name;
+                if (ship.dock != null) {
+                    newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = ship.dock.name;
+                }
+                else {
+                    newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = "moving";
+                }
+
+            }
+        }
+        //check for addition
     }
     private void updateAvailableShips() {
         List<String> availableShips = new List<string>();
