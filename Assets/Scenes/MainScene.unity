@@ -1069,6 +1069,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeText: {fileID: 442818450}
   moneyText: {fileID: 996839771}
+  availableShipParent: {fileID: 213245378}
+  ownedShipParent: {fileID: 0}
+  availableShipPrefab: {fileID: 1725036641}
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0

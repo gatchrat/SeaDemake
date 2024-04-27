@@ -17,7 +17,7 @@ public class Ship {
     }
     public Ship() {
         name = UnityEngine.Random.Range(0, 100) + "";
-        price = standardPrice * ((UnityEngine.Random.Range(0, 100) - 50) / 50);
+        price = (int)(standardPrice * (UnityEngine.Random.Range(60f, 140f) / 100f));
         Debug.Log("ship" + name);
     }
 }

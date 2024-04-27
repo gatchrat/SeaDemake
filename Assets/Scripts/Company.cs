@@ -10,20 +10,24 @@ public static class Company {
     public static List<Contract> acceptedContracts;
     public static List<Harbour> allHarbours;
     public static int curMoney = 0;
+    public delegate void companyUiUpdateEvent();
+    public static event companyUiUpdateEvent companyUiUpdate;
     public static void refreshAvailableShips() {
         availableShips = new List<Ship>();
         availableShips.Add(new Ship());
         availableShips.Add(new Ship());
         availableShips.Add(new Ship());
+        companyUiUpdate.Invoke();
     }
     public static void refreshAvailableContracts() {
-
+        companyUiUpdate.Invoke();
     }
     public static void Tick() {
         //substract all running costs
         foreach (Ship ship in ownedShips) {
             curMoney -= ship.runningCosts;
         }
+        companyUiUpdate.Invoke();
         //advance all accepted contracts
     }
     public static String buyShip(String shipname, String harbourName) {
@@ -54,6 +58,7 @@ public static class Company {
             ownedShips.Add(toBuy);
             toBuy.pos = toSpawn.pos;
             toBuy.dock = toSpawn;
+            companyUiUpdate.Invoke();
             return "Ship successfully aquired";
         }
     }
