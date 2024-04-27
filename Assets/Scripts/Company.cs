@@ -81,7 +81,7 @@ public static class Company {
     }
     public static String sendShip(String shipname, String harbourName) {
         Ship toSend = null;
-        foreach (Ship ship in availableShips) {
+        foreach (Ship ship in ownedShips) {
             if (ship.name == shipname) {
                 toSend = ship;
             }

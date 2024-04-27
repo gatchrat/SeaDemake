@@ -11,4 +11,8 @@ public class Harbour {
         pos = position;
         Debug.Log("harbour" + name);
     }
+    public Harbour(Vector2Int position, String s) {
+        name = s;
+        pos = position;
+    }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using JetBrains.Annotations;
+using System.Runtime.CompilerServices;
 public class GameMaster : MonoBehaviour {
     // Start is called before the first frame update
     private int curDay = 0;
@@ -13,6 +14,8 @@ public class GameMaster : MonoBehaviour {
     public Transform ownedShipParent;
     public GameObject availableShipPrefab;
     public GameObject ownedShipPrefab;
+    public GameObject HarbourPrefab;
+    public Transform HarbourParent;
     private List<GameObject> ownedShipsGUI = new List<GameObject>();
     private List<GameObject> availableShipsGUI = new List<GameObject>();
     void Start() {
@@ -24,11 +27,13 @@ public class GameMaster : MonoBehaviour {
         Company.refreshAvailableShips();
         Company.refreshAvailableContracts();
         Company.allHarbours = new List<Harbour>();
+        Company.allHarbours.Add(new Harbour(new Vector2Int(164, 56), "Hamburg"));
+        Company.allHarbours.Add(new Harbour(new Vector2Int(299, 146), "Sydney"));
         Company.allHarbours.Add(new Harbour(new Vector2Int(0, 0)));
-        Company.allHarbours.Add(new Harbour(new Vector2Int(0, 0)));
-        Company.allHarbours.Add(new Harbour(new Vector2Int(0, 0)));
+        generateHarbourUI();
         availableShipPrefab.SetActive(false);
         ownedShipPrefab.SetActive(false);
+        HarbourPrefab.SetActive(false);
     }
     void Tick() {
         curDay++;
@@ -83,6 +88,15 @@ public class GameMaster : MonoBehaviour {
             }
         }
         //check for addition
+    }
+    private void generateHarbourUI() {
+        foreach (Harbour harbour in Company.allHarbours) {
+            GameObject curPiece = GameObject.Instantiate(HarbourPrefab);
+            curPiece.transform.SetParent(HarbourParent, false);
+            curPiece.GetComponent<RectTransform>().anchoredPosition = new Vector3(3 + 4 * harbour.pos.x, -2 - 4 * harbour.pos.y, 0);
+            curPiece.name = harbour.name;
+            curPiece.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = harbour.name;
+        }
     }
     private void updateAvailableShips() {
         List<String> availableShips = new List<string>();

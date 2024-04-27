@@ -12,7 +12,9 @@ public class Pathfinder : MonoBehaviour {
     //(x,y), (0,0) is top left
     //(336,189)
     static Node[,] map = new Node[336, 189];
+    static Pathfinder Instance;
     void Start() {
+        Instance = this;
         List<Vector2Int> path = new List<Vector2Int>();
         for (int i = 0; i < 336; i++) {
             for (int y = 0; y < 189; y++) {
@@ -20,20 +22,26 @@ public class Pathfinder : MonoBehaviour {
                 map[i, y].isWater = isWater(worldMap.GetPixel(logicToPixelPos(new Vector2Int(i, y)).x, logicToPixelPos(new Vector2Int(i, y)).y));
                 map[i, y].pos = new Vector2Int(i, y);
                 if (map[i, y].isWater) {
-                    path.Add(new Vector2Int(i, y));
+                    if (i >= 299 && y >= 146) {
+                        path.Add(new Vector2Int(i, y));
+                    }
+
                 }
             }
         }
-        spawnPieces(findPath(new Vector2Int(150, 60), new Vector2Int(200, 100)));
         //spawnPieces(path);
+        //spawnPieces(findPath(new Vector2Int(150, 60), new Vector2Int(200, 100)));
     }
-    void spawnPieces(List<Vector2Int> path) {
+    public static List<GameObject> spawnPieces(List<Vector2Int> path) {
+        List<GameObject> pathObjects = new List<GameObject>();
         foreach (Vector2Int pos in path) {
-            GameObject curPiece = GameObject.Instantiate(pathPiece);
-            curPiece.transform.SetParent(parentT, false);
+            GameObject curPiece = GameObject.Instantiate(Pathfinder.Instance.pathPiece);
+            curPiece.transform.SetParent(Pathfinder.Instance.parentT, false);
             curPiece.GetComponent<RectTransform>().anchoredPosition = new Vector3(3 + 4 * pos.x, -2 - 4 * pos.y, 0);
             curPiece.transform.localScale = new Vector3(0.75f, 0.75f, 0);
+            pathObjects.Add(curPiece);
         }
+        return pathObjects;
     }
     public static float OctileDistance(Vector2Int from, Vector2Int to) {
         int dx = Mathf.Abs(to.x - from.x);

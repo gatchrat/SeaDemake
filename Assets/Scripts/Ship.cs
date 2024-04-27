@@ -28,9 +28,12 @@ public class Ship {
     }
     public void setPath(List<Vector2Int> newPath) {
         curPath = newPath;
-        foreach (GameObject pathPiece in curPathObjects) {
-            GameObject.Destroy(pathPiece);
+        if (curPathObjects != null) {
+            foreach (GameObject pathPiece in curPathObjects) {
+                GameObject.Destroy(pathPiece);
+            }
         }
+
         curPathObjects = Pathfinder.spawnPieces(curPath);
     }
     public void Tick() {
