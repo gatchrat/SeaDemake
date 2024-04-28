@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,4 +10,5 @@ public class Contract {
     public int daysToComplete;
     public List<Goods> toDeliverGoods = new List<Goods>();
     public List<Goods> deliverdGoods = new List<Goods>();
+    public String name;
 }

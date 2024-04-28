@@ -34,6 +34,7 @@ public class GameMaster : MonoBehaviour {
         availableShipPrefab.SetActive(false);
         ownedShipPrefab.SetActive(false);
         HarbourPrefab.SetActive(false);
+        Logger.addLog("Game init complete", Color.gray);
     }
     void Tick() {
         curDay++;

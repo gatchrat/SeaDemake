@@ -73,10 +73,12 @@ public static class Company {
     }
     public static void completeContract(Contract toComplete) {
         curMoney += toComplete.reward;
+        Logger.addLog("Contract " + toComplete.name + " completed. Reward: " + toComplete.reward + "$", Color.green);
         acceptedContracts.Remove(toComplete);
     }
     public static void failContract(Contract toComplete) {
         curMoney -= toComplete.penalty;
+        Logger.addLog("Contract " + toComplete.name + " failed. Penalty: " + toComplete.penalty + "$", Color.red);
         acceptedContracts.Remove(toComplete);
     }
     public static String sendShip(String shipname, String harbourName) {

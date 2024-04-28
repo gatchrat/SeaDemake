@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Harbour.cs" />
+    <Compile Include="Assets\Scripts\Logger.cs" />
     <Compile Include="Assets\Scripts\Goods.cs" />
     <Compile Include="Assets\Scripts\Pathfinder.cs" />
     <Compile Include="Assets\Scripts\Ship.cs" />

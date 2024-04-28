@@ -47,6 +47,7 @@ public class Ship {
                 dock = targetDock;
                 targetDock = null;
                 unloadContracts(Company.acceptedContracts);
+                Logger.addLog("Ship " + name + " arrived at " + dock.name, Color.white);
             }
         }
     }
