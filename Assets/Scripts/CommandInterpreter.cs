@@ -24,6 +24,11 @@ public static class CommandInterpreter {
                 pause - pauses the game, commands are still enabled
                 resume - un-pauses
                 exit - closes the game";
+            case "accept":
+                if (info.Length != 2) {
+                    return "Missing or too many parameters";
+                }
+                return Company.acceptContract(info[1]);
             case "distance":
                 if (info.Length != 3) {
                     return "Missing or too many parameters";

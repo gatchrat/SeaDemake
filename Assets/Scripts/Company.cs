@@ -139,5 +139,20 @@ public static class Company {
         }
         return "The Distance is " + Pathfinder.findPath(startDock.pos, endDock.pos).Count + "Days";
     }
+    public static String acceptContract(String ContractName) {
+        Contract contract = null;
+        foreach (Contract contracts in openContracts) {
+            if (contracts.name == ContractName) {
+                contract = contracts;
+            }
+        }
+        if (contract == null) {
+            return "No Contract with that ID found";
+        }
+        acceptedContracts.Add(contract);
+        openContracts.Remove(contract);
+        companyUiUpdate.Invoke();
+        return "The Contract was accepted";
+    }
 }
 
