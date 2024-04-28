@@ -24,6 +24,11 @@ public static class CommandInterpreter {
                 pause - pauses the game, commands are still enabled
                 resume - un-pauses
                 exit - closes the game";
+            case "distance":
+                if (info.Length != 3) {
+                    return "Missing or too many parameters";
+                }
+                return Company.getDistance(info[1], info[2]);
             case "send":
                 if (info.Length != 3) {
                     return "Missing or too many parameters";

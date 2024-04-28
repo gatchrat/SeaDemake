@@ -106,5 +106,26 @@ public static class Company {
         return "Ship successfully send";
 
     }
+    public static String getDistance(String Harbour1, String Harbour2) {
+        Harbour startDock = null;
+        foreach (Harbour harbour in allHarbours) {
+            if (harbour.name == Harbour1) {
+                startDock = harbour;
+            }
+        }
+        if (startDock == null) {
+            return "No Harbour with that Name found";
+        }
+        Harbour endDock = null;
+        foreach (Harbour harbour in allHarbours) {
+            if (harbour.name == Harbour2) {
+                endDock = harbour;
+            }
+        }
+        if (endDock == null) {
+            return "No Harbour with that Name found";
+        }
+        return "The Distance is " + Pathfinder.findPath(startDock.pos, endDock.pos).Count + "Days";
+    }
 }
 
