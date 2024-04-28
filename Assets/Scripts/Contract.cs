@@ -6,9 +6,9 @@ using UnityEngine;
 public class Contract {
     public Harbour targetHarbour;
     public int reward;
-    public int penalty;
+    public int penalty; //multiple of the reward, maybe half?
     public int daysToComplete;
     public List<Goods> toDeliverGoods = new List<Goods>();
     public List<Goods> deliverdGoods = new List<Goods>();
-    public String name;
+    public String name = "uninitialized";
 }

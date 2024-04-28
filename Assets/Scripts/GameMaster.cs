@@ -16,6 +16,9 @@ public class GameMaster : MonoBehaviour {
     public GameObject ownedShipPrefab;
     public GameObject HarbourPrefab;
     public Transform HarbourParent;
+    public Transform contractParent;
+    public GameObject contractPrefab;
+    private List<GameObject> contractGUI = new List<GameObject>();
     private List<GameObject> ownedShipsGUI = new List<GameObject>();
     private List<GameObject> HarbourGUI = new List<GameObject>();
     private List<GameObject> availableShipsGUI = new List<GameObject>();
@@ -27,16 +30,17 @@ public class GameMaster : MonoBehaviour {
         Company.acceptedContracts = new List<Contract>();
         Clock.Instance.tick += Tick;
         Company.companyUiUpdate += updateAllUI;
-        Company.refreshAvailableShips();
-        Company.refreshAvailableContracts();
         Company.allHarbours = new List<Harbour>();
         Company.allHarbours.Add(new Harbour(new Vector2Int(164, 56), "Hamburg"));
         Company.allHarbours.Add(new Harbour(new Vector2Int(299, 146), "Sydney"));
         HarboursToUnlock.Add((new Harbour(new Vector2Int(158, 59), "Felixstowe"), 2000));
+        Company.refreshAvailableShips();
+        Company.refreshAvailableContracts();
         regenerateHarbourUI();
         availableShipPrefab.SetActive(false);
         ownedShipPrefab.SetActive(false);
         HarbourPrefab.SetActive(false);
+        contractPrefab.SetActive(false);
         Logger.addLog("Game init complete", Color.gray);
     }
     void Tick() {
@@ -61,6 +65,7 @@ public class GameMaster : MonoBehaviour {
         timeText.text = "Day " + curDay.ToString();
         updateAvailableShips();
         updateOwnedShips();
+        updateContractUI();
 
     }
     private void updateOwnedShips() {
@@ -145,5 +150,42 @@ public class GameMaster : MonoBehaviour {
             }
         }
         //check for addition
+    }
+    private void updateContractUI() {
+        List<String> ContractNames = new List<string>();
+        foreach (Contract contract in Company.openContracts) {
+            Debug.Log(contract.name);
+            ContractNames.Add(contract.name);
+        }
+        foreach (Contract contract in Company.acceptedContracts) {
+            ContractNames.Add(contract.name);
+        }
+        //check for removal
+        List<String> contractUINames = new List<string>();
+        for (int i = 0; i < contractGUI.Count; i++) {
+            GameObject item = contractGUI[i];
+            String name = item.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text;
+            contractUINames.Add(name);
+            if (!ContractNames.Contains(name)) {
+                contractGUI.Remove(item);
+                Destroy(item);
+                i--;
+            }
+        }
+        //check for addition
+        foreach (Contract contract in Company.openContracts) {
+            if (!contractUINames.Contains(contract.name)) {
+                GameObject newGUI = GameObject.Instantiate(contractPrefab);
+                availableShipsGUI.Add(newGUI);
+                newGUI.SetActive(true);
+                newGUI.transform.SetParent(contractParent);
+                newGUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = contract.name;
+                newGUI.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = contract.targetHarbour.name;
+                newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = contract.reward + "$";
+                newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = contract.daysToComplete + "";
+            }
+        }
+        //check status
+
     }
 }

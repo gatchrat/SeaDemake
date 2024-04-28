@@ -6,8 +6,8 @@ using UnityEngine;
 public static class Company {
     public static List<Ship> ownedShips;
     public static List<Ship> availableShips;
-    public static List<Contract> openContracts;
-    public static List<Contract> acceptedContracts;
+    public static List<Contract> openContracts = new List<Contract>();
+    public static List<Contract> acceptedContracts = new List<Contract>();
     public static List<Harbour> allHarbours;
     public static int curMoney = 0;
     public delegate void companyUiUpdateEvent();
@@ -20,6 +20,18 @@ public static class Company {
         companyUiUpdate.Invoke();
     }
     public static void refreshAvailableContracts() {
+        //generate max up to 10 contracts
+        //add one when under 10
+        //otherwise replace 3
+        //never go above 15 overall contracts
+        if (openContracts.Count < 10 && openContracts.Count + acceptedContracts.Count < 15) {
+            openContracts.Add(ContractFactory.generateContract(allHarbours));
+        }
+        else {
+            for (int i = 0; i < Math.Min(openContracts.Count - 1, 2); i++) {
+                openContracts[UnityEngine.Random.Range(0, openContracts.Count)] = ContractFactory.generateContract(allHarbours);
+            }
+        }
         companyUiUpdate.Invoke();
     }
     public static void Tick() {

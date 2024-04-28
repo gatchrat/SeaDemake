@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\Clock.cs" />
     <Compile Include="Assets\Scripts\Company.cs" />
     <Compile Include="Assets\Scripts\Contract.cs" />
+    <Compile Include="Assets\Scripts\ContractFactory.cs" />
     <Compile Include="Assets\Scripts\CMD.cs" />
     <Compile Include="Assets\Scripts\CommandInterpreter.cs" />
   </ItemGroup>
