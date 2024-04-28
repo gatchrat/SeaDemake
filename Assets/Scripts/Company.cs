@@ -154,5 +154,20 @@ public static class Company {
         companyUiUpdate.Invoke();
         return "The Contract was accepted";
     }
+    public static String scrap(String shipname) {
+        Ship toScrap = null;
+        foreach (Ship ship in ownedShips) {
+            if (ship.name == shipname) {
+                toScrap = ship;
+            }
+        }
+        if (toScrap == null) {
+            return "No Ship with that Name found";
+        }
+        ownedShips.Remove(toScrap);
+        curMoney += 1000;
+        companyUiUpdate.Invoke();
+        return "The Ship was Scrapped, 1000$ in material cost was recovered";
+    }
 }
 

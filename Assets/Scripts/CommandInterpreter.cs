@@ -17,13 +17,17 @@ public static class CommandInterpreter {
                 buy (ship) (target) - Buys the specified ship and spawns it in the target harbour
                 speed (speed) - sets the game speed to the specified speed, possible options are 1-5
                 accept (contractNumber) - accepts the specified Contract
-                price (good) - Lists the price of the good in all available Location
                 unload (ship) (good) (count) - Sells the specified good from the specified ship in its current harbour, count is optional
                 scrap (ship) - Scraps the ship, removing its running costs
                 distance (harbour) (harbour) - Lists the distance in days between the two harbours
                 pause - pauses the game, commands are still enabled
                 resume - un-pauses
                 exit - closes the game";
+            case "scrap":
+                if (info.Length != 2) {
+                    return "Missing or too many parameters";
+                }
+                return Company.scrap(info[1]);
             case "accept":
                 if (info.Length != 2) {
                     return "Missing or too many parameters";
