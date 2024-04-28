@@ -23,6 +23,27 @@ public static class CommandInterpreter {
                 pause - pauses the game, commands are still enabled
                 resume - un-pauses
                 exit - closes the game";
+            case "load":
+                if (info.Length == 3) {
+                    return Company.load(info[1], info[2]);
+                }
+                if (info.Length == 4) {
+                    return Company.load(info[1], info[2], info[3]);
+                }
+                else {
+                    return "Missing or too many parameters";
+                }
+
+            case "unload":
+                if (info.Length == 3) {
+                    return Company.unload(info[1], info[2]);
+                }
+                if (info.Length == 4) {
+                    return Company.unload(info[1], info[2], info[3]);
+                }
+                else {
+                    return "Missing or too many parameters";
+                }
             case "scrap":
                 if (info.Length != 2) {
                     return "Missing or too many parameters";

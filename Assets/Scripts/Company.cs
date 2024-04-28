@@ -169,5 +169,127 @@ public static class Company {
         companyUiUpdate.Invoke();
         return "The Ship was Scrapped, 1000$ in material cost was recovered";
     }
+    public static String unload(String shipname, String goodName, String countAsString) {
+        Ship toUnload = null;
+        foreach (Ship ship in ownedShips) {
+            if (ship.name == shipname) {
+                toUnload = ship;
+            }
+        }
+        if (toUnload == null) {
+            return "No Ship with that Name found";
+        }
+        //decode count
+        int count = 0;
+        try {
+            count = Int32.Parse(countAsString);
+            if (count < 1) {
+                return "Not a valid Count";
+            }
+        }
+        catch {
+            return "Not a valid Count";
+        }
+        //decode good
+        TypeOfGoods targetGood;
+        switch (goodName) {
+            case "food":
+                targetGood = TypeOfGoods.Food;
+                break;
+            case "medicine":
+                targetGood = TypeOfGoods.Medicine;
+                break;
+            case "rawmaterials":
+                targetGood = TypeOfGoods.rawMaterials;
+                break;
+            default:
+                return "Unkown Cargo";
+        }
+        //check if good is loaded
+        //check if good is loaded in required amount
+        int loaded = 0;
+        foreach (TypeOfGoods item in toUnload.content) {
+            if (item == targetGood) {
+                loaded++;
+            }
+        }
+        if (loaded < count) {
+            return "The Ship does not have enough of this type of cargo loaded";
+        }
+        int price = toUnload.dock.priceOf(targetGood);
+        if (price < 1) {
+            return "The Harbour is not interested in these goods";
+        }
+        for (int i = 0; i < count; i++) {
+            toUnload.content.Remove(targetGood);
+        }
+        curMoney += price * count;
+        return "The goods where sold successfully";
+    }
+    public static String load(String shipname, String goodName, String countAsString) {
+        Ship toLoad = null;
+        foreach (Ship ship in ownedShips) {
+            if (ship.name == shipname) {
+                toLoad = ship;
+            }
+        }
+        if (toLoad == null) {
+            return "No Ship with that Name found";
+        }
+        if (toLoad.targetDock != null) {
+            return "Ship is currently not docked";
+        }
+        //decode count
+        int count = 0;
+        try {
+            count = Int32.Parse(countAsString);
+            if (count < 1) {
+                return "Not a valid Count";
+            }
+        }
+        catch {
+            return "Not a valid Count";
+        }
+        //decode good
+        TypeOfGoods targetGood;
+        switch (goodName) {
+            case "food":
+                targetGood = TypeOfGoods.Food;
+                break;
+            case "medicine":
+                targetGood = TypeOfGoods.Medicine;
+                break;
+            case "rawmaterials":
+                targetGood = TypeOfGoods.rawMaterials;
+                break;
+            default:
+                return "Unkown Cargo";
+        }
+        int price = toLoad.dock.priceOf(targetGood);
+        if (price == 0) {
+            return "The good is not sold here";
+        }
+        //check if Company can afford
+        if (price * count > curMoney) {
+            return "Your Company does not have the neccessary funds";
+        }
+        //check if ship has enough space
+        if (toLoad.inventorySize - toLoad.content.Count < count) {
+            return "The ship does not have the neccessary inventory space";
+        }
+        for (int i = 0; i < count; i++) {
+            toLoad.content.Add(targetGood);
+        }
+        curMoney -= price * count;
+        return "The Ship was loaded and Capital removed";
+    }
+    public static String load(String shipname, String goodName) {
+
+        return load(shipname, goodName, "1");
+    }
+    public static String unload(String shipname, String goodName) {
+
+        return unload(shipname, goodName, "1");
+    }
 }
 

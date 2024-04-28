@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 public class Ship {
     public String name;
     public int inventorySize = 3;
-    public List<Goods> content;
+    public List<TypeOfGoods> content = new List<TypeOfGoods>();
     private int standardPrice = 10000;
-    public int runningCosts = 5;
+    public int runningCosts = 0;
     public int price = 0;
     public Vector2Int pos;
     //current dock and target
@@ -56,7 +56,7 @@ public class Ship {
             if (contract.targetHarbour == dock) {
                 for (int i = 0; i < contract.toDeliverGoods.Count; i++) {
                     for (int x = 0; x < content.Count; x++) {
-                        if (contract.toDeliverGoods[i].type == content[x].type) {
+                        if (contract.toDeliverGoods[i] == content[x]) {
                             content.Remove(content[x]);
                             contract.deliverdGoods.Add(contract.toDeliverGoods[i]);
                             contract.toDeliverGoods.Remove(contract.toDeliverGoods[i]);
