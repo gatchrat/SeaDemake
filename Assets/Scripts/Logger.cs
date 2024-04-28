@@ -8,7 +8,7 @@ public class Logger : MonoBehaviour {
     public TextMeshProUGUI text;
     private int maxLines = 20;
     public static Logger Instance;
-    void Start() {
+    void Awake() {
         Instance = this;
     }
     void Update() {
