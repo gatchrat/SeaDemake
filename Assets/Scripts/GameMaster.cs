@@ -13,6 +13,7 @@ public class GameMaster : MonoBehaviour {
     public Transform availableShipParent;
     public Transform ownedShipParent;
     public GameObject availableShipPrefab;
+    public GameObject ShipPrefab;
     public GameObject ownedShipPrefab;
     public GameObject HarbourPrefab;
     public Transform HarbourParent;
@@ -20,6 +21,7 @@ public class GameMaster : MonoBehaviour {
     public GameObject contractPrefab;
     private List<GameObject> contractGUI = new List<GameObject>();
     private List<GameObject> ownedShipsGUI = new List<GameObject>();
+    private List<GameObject> ShipsGUI = new List<GameObject>();
     private List<GameObject> HarbourGUI = new List<GameObject>();
     private List<GameObject> availableShipsGUI = new List<GameObject>();
     //Assumed to be in correct order
@@ -41,6 +43,7 @@ public class GameMaster : MonoBehaviour {
         ownedShipPrefab.SetActive(false);
         HarbourPrefab.SetActive(false);
         contractPrefab.SetActive(false);
+        ShipPrefab.SetActive(false);
         Logger.addLog("Game init complete", Color.gray);
     }
     void Tick() {
@@ -66,6 +69,7 @@ public class GameMaster : MonoBehaviour {
         updateAvailableShips();
         updateOwnedShips();
         updateContractUI();
+        regenerateShipUI();
 
     }
     private void updateOwnedShips() {
@@ -119,6 +123,23 @@ public class GameMaster : MonoBehaviour {
             curHarbourUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = harbour.name;
             curHarbourUI.SetActive(true);
             HarbourGUI.Add(curHarbourUI);
+        }
+    }
+    private void regenerateShipUI() {
+        if (ShipsGUI != null) {
+            for (int i = 0; i < ShipsGUI.Count; i++) {
+                Destroy(ShipsGUI[i]);
+            }
+        }
+        ShipsGUI = new List<GameObject>();
+        foreach (Ship ship in Company.ownedShips) {
+            GameObject curShipUI = GameObject.Instantiate(ShipPrefab);
+            curShipUI.transform.SetParent(HarbourParent, false);
+            curShipUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(3 + 4 * ship.pos.x, -2 - 4 * ship.pos.y, 0);
+            curShipUI.name = ship.name;
+            curShipUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ship.name;
+            curShipUI.SetActive(true);
+            ShipsGUI.Add(curShipUI);
         }
     }
     private void updateAvailableShips() {

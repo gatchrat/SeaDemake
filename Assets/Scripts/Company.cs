@@ -224,6 +224,7 @@ public static class Company {
             toUnload.content.Remove(targetGood);
         }
         curMoney += price * count;
+        companyUiUpdate.Invoke();
         return "The goods where sold successfully";
     }
     public static String load(String shipname, String goodName, String countAsString) {
@@ -281,6 +282,7 @@ public static class Company {
             toLoad.content.Add(targetGood);
         }
         curMoney -= price * count;
+        companyUiUpdate.Invoke();
         return "The Ship was loaded and Capital removed";
     }
     public static String load(String shipname, String goodName) {
