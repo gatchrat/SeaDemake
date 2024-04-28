@@ -176,7 +176,7 @@ public class GameMaster : MonoBehaviour {
         foreach (Contract contract in Company.openContracts) {
             if (!contractUINames.Contains(contract.name)) {
                 GameObject newGUI = GameObject.Instantiate(contractPrefab);
-                availableShipsGUI.Add(newGUI);
+                contractGUI.Add(newGUI);
                 newGUI.SetActive(true);
                 newGUI.transform.SetParent(contractParent);
                 newGUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = contract.name;
