@@ -20,7 +20,6 @@ public static class CommandInterpreter {
                 price (good) - Lists the price of the good in all available Location
                 unload (ship) (good) (count) - Sells the specified good from the specified ship in its current harbour, count is optional
                 scrap (ship) - Scraps the ship, removing its running costs
-                goods (harbour) - Lists the prices of all goods in the specified harbour
                 distance (harbour) (harbour) - Lists the distance in days between the two harbours
                 pause - pauses the game, commands are still enabled
                 resume - un-pauses
