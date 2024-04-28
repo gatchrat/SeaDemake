@@ -17,7 +17,10 @@ public class GameMaster : MonoBehaviour {
     public GameObject HarbourPrefab;
     public Transform HarbourParent;
     private List<GameObject> ownedShipsGUI = new List<GameObject>();
+    private List<GameObject> HarbourGUI = new List<GameObject>();
     private List<GameObject> availableShipsGUI = new List<GameObject>();
+    //Assumed to be in correct order
+    public List<(Harbour, int)> HarboursToUnlock = new List<(Harbour, int)>();
     void Start() {
         Company.curMoney = 10000;
         Company.ownedShips = new List<Ship>();
@@ -29,8 +32,8 @@ public class GameMaster : MonoBehaviour {
         Company.allHarbours = new List<Harbour>();
         Company.allHarbours.Add(new Harbour(new Vector2Int(164, 56), "Hamburg"));
         Company.allHarbours.Add(new Harbour(new Vector2Int(299, 146), "Sydney"));
-        Company.allHarbours.Add(new Harbour(new Vector2Int(0, 0)));
-        generateHarbourUI();
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(158, 59), "Felixstowe"), 2000));
+        regenerateHarbourUI();
         availableShipPrefab.SetActive(false);
         ownedShipPrefab.SetActive(false);
         HarbourPrefab.SetActive(false);
@@ -45,6 +48,12 @@ public class GameMaster : MonoBehaviour {
             Company.refreshAvailableContracts();
         }
         Company.Tick();
+        if (HarboursToUnlock.Count > 0 && Company.curMoney > HarboursToUnlock[0].Item2) {
+            Company.allHarbours.Add(HarboursToUnlock[0].Item1);
+            Logger.addLog("Unlocked new Harbour " + HarboursToUnlock[0].Item1.name, Color.green);
+            HarboursToUnlock.RemoveAt(0);
+            regenerateHarbourUI();
+        }
         updateAllUI();
     }
     private void updateAllUI() {
@@ -90,13 +99,21 @@ public class GameMaster : MonoBehaviour {
         }
         //check for addition
     }
-    private void generateHarbourUI() {
+    private void regenerateHarbourUI() {
+        if (HarbourGUI != null) {
+            for (int i = 0; i < HarbourGUI.Count; i++) {
+                Destroy(HarbourGUI[i]);
+            }
+        }
+        HarbourGUI = new List<GameObject>();
         foreach (Harbour harbour in Company.allHarbours) {
-            GameObject curPiece = GameObject.Instantiate(HarbourPrefab);
-            curPiece.transform.SetParent(HarbourParent, false);
-            curPiece.GetComponent<RectTransform>().anchoredPosition = new Vector3(3 + 4 * harbour.pos.x, -2 - 4 * harbour.pos.y, 0);
-            curPiece.name = harbour.name;
-            curPiece.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = harbour.name;
+            GameObject curHarbourUI = GameObject.Instantiate(HarbourPrefab);
+            curHarbourUI.transform.SetParent(HarbourParent, false);
+            curHarbourUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(3 + 4 * harbour.pos.x, -2 - 4 * harbour.pos.y, 0);
+            curHarbourUI.name = harbour.name;
+            curHarbourUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = harbour.name;
+            curHarbourUI.SetActive(true);
+            HarbourGUI.Add(curHarbourUI);
         }
     }
     private void updateAvailableShips() {
