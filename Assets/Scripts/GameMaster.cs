@@ -26,6 +26,7 @@ public class GameMaster : MonoBehaviour {
     public Sprite IronImage;
     public Sprite MedicineImage;
     public Sprite CoalImage;
+    public Sprite AcceptedImage;
     private List<GameObject> contractGUI = new List<GameObject>();
     private List<GameObject> ownedShipsGUI = new List<GameObject>();
     private List<GameObject> ShipsGUI = new List<GameObject>();
@@ -231,7 +232,7 @@ public class GameMaster : MonoBehaviour {
         List<String> contractUINames = new List<string>();
         for (int i = 0; i < contractGUI.Count; i++) {
             GameObject item = contractGUI[i];
-            String name = item.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text;
+            String name = item.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text;
             contractUINames.Add(name);
             if (!ContractNames.Contains(name)) {
                 contractGUI.Remove(item);
@@ -246,13 +247,15 @@ public class GameMaster : MonoBehaviour {
                 contractGUI.Add(newGUI);
                 newGUI.SetActive(true);
                 newGUI.transform.SetParent(contractParent);
-                newGUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = contract.name;
-                newGUI.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = contract.targetHarbour.name;
-                newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = contract.reward + "$";
-                newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = contract.daysToComplete + "";
+                newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = contract.name;
+                newGUI.transform.GetChild(5).gameObject.GetComponent<TextMeshProUGUI>().text = contract.targetHarbour.name;
+                newGUI.transform.GetChild(6).gameObject.GetComponent<TextMeshProUGUI>().text = contract.reward + "$";
+                newGUI.transform.GetChild(7).gameObject.GetComponent<TextMeshProUGUI>().text = contract.penalty + "$";
+                newGUI.transform.GetChild(8).gameObject.GetComponent<TextMeshProUGUI>().text = contract.daysToComplete + "";
+                contract.gui = newGUI;
+                contract.acceptedImage = AcceptedImage;
             }
         }
         //check status
-
     }
 }

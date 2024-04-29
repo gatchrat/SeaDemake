@@ -150,6 +150,7 @@ public static class Company {
             return "No Contract with that ID found";
         }
         acceptedContracts.Add(contract);
+        contract.setAccepted();
         openContracts.Remove(contract);
         companyUiUpdate.Invoke();
         return "The Contract was accepted";
