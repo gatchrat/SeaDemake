@@ -7,7 +7,7 @@ public static class CommandInterpreter {
     public static String interprete(String input) {
         input = input.Remove(0, 1); // remove > at the start
         String[] info = input.Split(' ');
-        switch (info[0]) //check name of command
+        switch (info[0].ToLower()) //check name of command
         {
             case "help":
                 return @"Here is a list of all commands:
