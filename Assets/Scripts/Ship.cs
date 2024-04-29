@@ -57,8 +57,7 @@ public class Ship {
                     for (int x = 0; x < content.Count; x++) {
                         if (contract.toDeliverGoods[i] == content[x]) {
                             content.Remove(content[x]);
-                            contract.deliverdGoods.Add(contract.toDeliverGoods[i]);
-                            contract.toDeliverGoods.Remove(contract.toDeliverGoods[i]);
+                            contract.deliver(contract.toDeliverGoods[i]);
                             x--;
                             i--;
 

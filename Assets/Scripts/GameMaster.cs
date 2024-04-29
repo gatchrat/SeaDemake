@@ -268,6 +268,15 @@ public class GameMaster : MonoBehaviour {
                 newGUI.transform.GetChild(8).gameObject.GetComponent<TextMeshProUGUI>().text = contract.daysToComplete + "";
                 contract.gui = newGUI;
                 contract.acceptedImage = AcceptedImage;
+                List<Sprite> ContainerSprites = new List<Sprite>();
+                ContainerSprites.Add(emptyImage);
+                ContainerSprites.Add(CoalImage);
+                ContainerSprites.Add(FoodImage);
+                ContainerSprites.Add(IronImage);
+                ContainerSprites.Add(MedicineImage);
+                ContainerSprites.Add(WoodImage);
+                contract.images = ContainerSprites;
+                contract.updateGUI();
             }
         }
         //check status
