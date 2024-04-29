@@ -54,6 +54,11 @@ public class GameMaster : MonoBehaviour {
         if (curDay % 20 == 0) {
             Company.refreshAvailableContracts();
         }
+        if (curDay % 10 == 0) {
+            foreach (Harbour harbour in Company.allHarbours) {
+                harbour.updatePrices();
+            }
+        }
         Company.Tick();
         if (HarboursToUnlock.Count > 0 && Company.curMoney > HarboursToUnlock[0].Item2) {
             Company.allHarbours.Add(HarboursToUnlock[0].Item1);

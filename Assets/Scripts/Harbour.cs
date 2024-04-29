@@ -26,7 +26,7 @@ public class Harbour {
         allGoods.Add(TypeOfGoods.Food);
         allGoods.Add(TypeOfGoods.Medicine);
         allGoods.Add(TypeOfGoods.Wood);
-        allGoods.Add(TypeOfGoods.Steel);
+        allGoods.Add(TypeOfGoods.Iron);
         allGoods.Add(TypeOfGoods.Coal);
         for (int i = 0; i < UnityEngine.Random.Range(2, 5); i++) {
             int index = UnityEngine.Random.Range(0, allGoods.Count);

@@ -202,8 +202,8 @@ public static class Company {
             case "wood":
                 targetGood = TypeOfGoods.Wood;
                 break;
-            case "steel":
-                targetGood = TypeOfGoods.Steel;
+            case "iron":
+                targetGood = TypeOfGoods.Iron;
                 break;
             case "coal":
                 targetGood = TypeOfGoods.Coal;
@@ -269,8 +269,8 @@ public static class Company {
             case "wood":
                 targetGood = TypeOfGoods.Wood;
                 break;
-            case "steel":
-                targetGood = TypeOfGoods.Steel;
+            case "iron":
+                targetGood = TypeOfGoods.Iron;
                 break;
             case "coal":
                 targetGood = TypeOfGoods.Coal;
