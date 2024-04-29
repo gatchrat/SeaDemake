@@ -54,7 +54,7 @@ public static class Company {
     public static String buyShip(String shipname, String harbourName) {
         Ship toBuy = null;
         foreach (Ship ship in availableShips) {
-            if (ship.name == shipname) {
+            if (ship.name.ToLower() == shipname.ToLower()) {
                 toBuy = ship;
             }
         }
@@ -67,7 +67,7 @@ public static class Company {
         else {
             Harbour toSpawn = null;
             foreach (Harbour harbour in allHarbours) {
-                if (harbour.name == harbourName) {
+                if (harbour.name.ToLower() == harbourName.ToLower()) {
                     toSpawn = harbour;
                 }
             }
@@ -96,7 +96,7 @@ public static class Company {
     public static String sendShip(String shipname, String harbourName) {
         Ship toSend = null;
         foreach (Ship ship in ownedShips) {
-            if (ship.name == shipname) {
+            if (ship.name.ToLower() == shipname.ToLower()) {
                 toSend = ship;
             }
         }
@@ -105,7 +105,7 @@ public static class Company {
         }
         Harbour toDock = null;
         foreach (Harbour harbour in allHarbours) {
-            if (harbour.name == harbourName) {
+            if (harbour.name.ToLower() == harbourName.ToLower()) {
                 toDock = harbour;
             }
         }
@@ -121,7 +121,7 @@ public static class Company {
     public static String getDistance(String Harbour1, String Harbour2) {
         Harbour startDock = null;
         foreach (Harbour harbour in allHarbours) {
-            if (harbour.name == Harbour1) {
+            if (harbour.name.ToLower() == Harbour1.ToLower()) {
                 startDock = harbour;
             }
         }
@@ -130,7 +130,7 @@ public static class Company {
         }
         Harbour endDock = null;
         foreach (Harbour harbour in allHarbours) {
-            if (harbour.name == Harbour2) {
+            if (harbour.name.ToLower() == Harbour2.ToLower()) {
                 endDock = harbour;
             }
         }
@@ -157,7 +157,7 @@ public static class Company {
     public static String scrap(String shipname) {
         Ship toScrap = null;
         foreach (Ship ship in ownedShips) {
-            if (ship.name == shipname) {
+            if (ship.name.ToLower() == shipname.ToLower()) {
                 toScrap = ship;
             }
         }
@@ -172,7 +172,7 @@ public static class Company {
     public static String unload(String shipname, String goodName, String countAsString) {
         Ship toUnload = null;
         foreach (Ship ship in ownedShips) {
-            if (ship.name == shipname) {
+            if (ship.name.ToLower() == shipname.ToLower()) {
                 toUnload = ship;
             }
         }
@@ -192,15 +192,21 @@ public static class Company {
         }
         //decode good
         TypeOfGoods targetGood;
-        switch (goodName) {
+        switch (goodName.ToLower()) {
             case "food":
                 targetGood = TypeOfGoods.Food;
                 break;
             case "medicine":
                 targetGood = TypeOfGoods.Medicine;
                 break;
-            case "rawmaterials":
-                targetGood = TypeOfGoods.rawMaterials;
+            case "wood":
+                targetGood = TypeOfGoods.Wood;
+                break;
+            case "steel":
+                targetGood = TypeOfGoods.Steel;
+                break;
+            case "coal":
+                targetGood = TypeOfGoods.Coal;
                 break;
             default:
                 return "Unkown Cargo";
@@ -230,7 +236,7 @@ public static class Company {
     public static String load(String shipname, String goodName, String countAsString) {
         Ship toLoad = null;
         foreach (Ship ship in ownedShips) {
-            if (ship.name == shipname) {
+            if (ship.name.ToLower() == shipname.ToLower()) {
                 toLoad = ship;
             }
         }
@@ -253,15 +259,21 @@ public static class Company {
         }
         //decode good
         TypeOfGoods targetGood;
-        switch (goodName) {
+        switch (goodName.ToLower()) {
             case "food":
                 targetGood = TypeOfGoods.Food;
                 break;
             case "medicine":
                 targetGood = TypeOfGoods.Medicine;
                 break;
-            case "rawmaterials":
-                targetGood = TypeOfGoods.rawMaterials;
+            case "wood":
+                targetGood = TypeOfGoods.Wood;
+                break;
+            case "steel":
+                targetGood = TypeOfGoods.Steel;
+                break;
+            case "coal":
+                targetGood = TypeOfGoods.Coal;
                 break;
             default:
                 return "Unkown Cargo";
