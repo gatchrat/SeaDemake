@@ -3,5 +3,5 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum TypeOfGoods {
-    Food, Medicine, rawMaterials
+    Food, Medicine, Wood, Steel, Coal
 }
