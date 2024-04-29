@@ -24,7 +24,6 @@ public class Ship {
     public Ship() {
         name = UnityEngine.Random.Range(0, 100) + "";
         price = (int)(standardPrice * (UnityEngine.Random.Range(60f, 140f) / 100f));
-        Debug.Log("ship" + name);
     }
     public void setPath(List<Vector2Int> newPath) {
         curPath = newPath;

@@ -20,6 +20,8 @@ public class GameMaster : MonoBehaviour {
     public Transform HarbourParent;
     public Transform contractParent;
     public GameObject contractPrefab;
+    public Transform pricesParent;
+    public GameObject pricesPrefab;
     public Sprite emptyImage;
     public Sprite WoodImage;
     public Sprite FoodImage;
@@ -32,6 +34,7 @@ public class GameMaster : MonoBehaviour {
     private List<GameObject> ShipsGUI = new List<GameObject>();
     private List<GameObject> HarbourGUI = new List<GameObject>();
     private List<GameObject> availableShipsGUI = new List<GameObject>();
+    private List<GameObject> pricesGUI = new List<GameObject>();
     //Assumed to be in correct order
     public List<(Harbour, int)> HarboursToUnlock = new List<(Harbour, int)>();
     void Start() {
@@ -47,11 +50,13 @@ public class GameMaster : MonoBehaviour {
         Company.refreshAvailableShips();
         Company.refreshAvailableContracts();
         regenerateHarbourUI();
+        updatePricesUI();
         availableShipPrefab.SetActive(false);
         ownedShipPrefab.SetActive(false);
         HarbourPrefab.SetActive(false);
         contractPrefab.SetActive(false);
         ShipPrefab.SetActive(false);
+        pricesPrefab.SetActive(false);
         Logger.addLog("Game init complete", Color.gray);
     }
     void Tick() {
@@ -65,6 +70,7 @@ public class GameMaster : MonoBehaviour {
         if (curDay % 10 == 0) {
             foreach (Harbour harbour in Company.allHarbours) {
                 harbour.updatePrices();
+                updatePricesUI();
             }
         }
         Company.Tick();
@@ -73,6 +79,7 @@ public class GameMaster : MonoBehaviour {
             Logger.addLog("Unlocked new Harbour " + HarboursToUnlock[0].Item1.name, Color.green);
             HarboursToUnlock.RemoveAt(0);
             regenerateHarbourUI();
+            updatePricesUI();
         }
         updateAllUI();
     }
@@ -222,7 +229,6 @@ public class GameMaster : MonoBehaviour {
     private void updateContractUI() {
         List<String> ContractNames = new List<string>();
         foreach (Contract contract in Company.openContracts) {
-            Debug.Log(contract.name);
             ContractNames.Add(contract.name);
         }
         foreach (Contract contract in Company.acceptedContracts) {
@@ -257,5 +263,80 @@ public class GameMaster : MonoBehaviour {
             }
         }
         //check status
+    }
+    private void updatePricesUI() {
+        List<String> HarbourNames = new List<string>();
+        foreach (Harbour harbour in Company.allHarbours) {
+            HarbourNames.Add(harbour.name);
+        }
+        //check for removal
+        List<String> harbourUINames = new List<string>();
+        for (int i = 0; i < pricesGUI.Count; i++) {
+            GameObject item = pricesGUI[i];
+            String name = item.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text;
+            harbourUINames.Add(name);
+        }
+        //check for addition
+        foreach (Harbour harbour in Company.allHarbours) {
+            if (!harbourUINames.Contains(harbour.name)) {
+                GameObject newGUI = GameObject.Instantiate(pricesPrefab);
+                pricesGUI.Add(newGUI);
+                newGUI.SetActive(true);
+                newGUI.transform.SetParent(pricesParent);
+                newGUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = harbour.name;
+                newGUI.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = "---";
+                newGUI.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = "---";
+                newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = "---";
+                newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = "---";
+                newGUI.transform.GetChild(5).gameObject.GetComponent<TextMeshProUGUI>().text = "---";
+                foreach ((TypeOfGoods, int) item in harbour.prices) {
+                    switch (item.Item1) {
+                        case TypeOfGoods.Coal:
+                            newGUI.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                            break;
+                        case TypeOfGoods.Food:
+                            newGUI.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                            break;
+                        case TypeOfGoods.Iron:
+                            newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                            break;
+                        case TypeOfGoods.Medicine:
+                            newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                            break;
+                        case TypeOfGoods.Wood:
+                            newGUI.transform.GetChild(5).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                            break;
+                    }
+                }
+
+            }
+            else {
+                //find Objekt and set prices
+                foreach (GameObject targetUI in pricesGUI) {
+                    if (harbour.name == targetUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text) {
+                        foreach ((TypeOfGoods, int) item in harbour.prices) {
+                            switch (item.Item1) {
+                                case TypeOfGoods.Coal:
+                                    targetUI.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                                    break;
+                                case TypeOfGoods.Food:
+                                    targetUI.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                                    break;
+                                case TypeOfGoods.Iron:
+                                    targetUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                                    break;
+                                case TypeOfGoods.Medicine:
+                                    targetUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                                    break;
+                                case TypeOfGoods.Wood:
+                                    targetUI.transform.GetChild(5).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
     }
 }
