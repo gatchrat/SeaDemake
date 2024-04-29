@@ -5,6 +5,7 @@ using TMPro;
 using System;
 using JetBrains.Annotations;
 using System.Runtime.CompilerServices;
+using UnityEngine.UI;
 public class GameMaster : MonoBehaviour {
     // Start is called before the first frame update
     private int curDay = 0;
@@ -19,6 +20,12 @@ public class GameMaster : MonoBehaviour {
     public Transform HarbourParent;
     public Transform contractParent;
     public GameObject contractPrefab;
+    public Sprite emptyImage;
+    public Sprite WoodImage;
+    public Sprite FoodImage;
+    public Sprite IronImage;
+    public Sprite MedicineImage;
+    public Sprite CoalImage;
     private List<GameObject> contractGUI = new List<GameObject>();
     private List<GameObject> ownedShipsGUI = new List<GameObject>();
     private List<GameObject> ShipsGUI = new List<GameObject>();
@@ -94,7 +101,7 @@ public class GameMaster : MonoBehaviour {
                 i--;
             }
         }
-
+        //check for addition
         foreach (Ship ship in Company.ownedShips) {
             if (!ownedShipsGUINames.Contains(ship.name)) {
                 GameObject newGUI = GameObject.Instantiate(ownedShipPrefab);
@@ -108,10 +115,41 @@ public class GameMaster : MonoBehaviour {
                 else {
                     newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = "moving";
                 }
+                for (int i = 0; i < 4 - ship.inventorySize; i++) {
+                    Destroy(newGUI.transform.GetChild(2).GetChild(3 - i).gameObject);
+                }
 
             }
         }
-        //check for addition
+        //update Status
+        for (int i = 0; i < ownedShipsGUI.Count; i++) {
+            Ship ship = Company.ownedShips[i];
+            for (int x = 0; x < ship.inventorySize; x++) {
+                if (x < ship.content.Count) {
+                    switch (ship.content[x]) {
+                        case TypeOfGoods.Wood:
+                            ownedShipsGUI[i].transform.GetChild(2).GetChild(x).gameObject.GetComponent<Image>().sprite = WoodImage;
+                            break;
+                        case TypeOfGoods.Coal:
+                            ownedShipsGUI[i].transform.GetChild(2).GetChild(x).gameObject.GetComponent<Image>().sprite = CoalImage;
+                            break;
+                        case TypeOfGoods.Food:
+                            ownedShipsGUI[i].transform.GetChild(2).GetChild(x).gameObject.GetComponent<Image>().sprite = FoodImage;
+                            break;
+                        case TypeOfGoods.Iron:
+                            ownedShipsGUI[i].transform.GetChild(2).GetChild(x).gameObject.GetComponent<Image>().sprite = IronImage;
+                            break;
+                        case TypeOfGoods.Medicine:
+                            ownedShipsGUI[i].transform.GetChild(2).GetChild(x).gameObject.GetComponent<Image>().sprite = MedicineImage;
+                            break;
+                    }
+                }
+                else {
+                    ownedShipsGUI[i].transform.GetChild(2).GetChild(x).gameObject.GetComponent<Image>().sprite = emptyImage;
+                }
+            }
+        }
+
     }
     private void regenerateHarbourUI() {
         if (HarbourGUI != null) {
@@ -164,7 +202,7 @@ public class GameMaster : MonoBehaviour {
                 i--;
             }
         }
-
+        //check for addition
         foreach (Ship ship in Company.availableShips) {
             if (!availableShipsGUINames.Contains(ship.name)) {
                 GameObject newGUI = GameObject.Instantiate(availableShipPrefab);
@@ -173,9 +211,12 @@ public class GameMaster : MonoBehaviour {
                 newGUI.transform.SetParent(availableShipParent);
                 newGUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ship.name;
                 newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = ship.price + "$";
+                for (int i = 0; i < 4 - ship.inventorySize; i++) {
+                    Destroy(newGUI.transform.GetChild(2).GetChild(3 - i).gameObject);
+                }
             }
         }
-        //check for addition
+
     }
     private void updateContractUI() {
         List<String> ContractNames = new List<string>();
