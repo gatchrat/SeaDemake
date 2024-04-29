@@ -13,7 +13,7 @@ public class Pathfinder : MonoBehaviour {
     //(336,189)
     static Node[,] map = new Node[336, 189];
     static Pathfinder Instance;
-    void Start() {
+    void Awake() {
         Instance = this;
         List<Vector2Int> path = new List<Vector2Int>();
         for (int i = 0; i < 336; i++) {
