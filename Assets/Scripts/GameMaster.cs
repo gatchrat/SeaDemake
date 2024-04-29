@@ -117,12 +117,13 @@ public class GameMaster : MonoBehaviour {
                 newGUI.SetActive(true);
                 newGUI.transform.SetParent(ownedShipParent);
                 newGUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ship.name;
-                if (ship.dock != null) {
-                    newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = ship.dock.name;
+                if (ship.targetDock != null) {
+                    newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = "..." + ship.targetDock.name;
                 }
                 else {
-                    newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = "moving";
+                    newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = ship.dock.name;
                 }
+                newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = ship.runningCosts + "$";
                 for (int i = 0; i < 4 - ship.inventorySize; i++) {
                     Destroy(newGUI.transform.GetChild(2).GetChild(3 - i).gameObject);
                 }
@@ -155,6 +156,12 @@ public class GameMaster : MonoBehaviour {
                 else {
                     ownedShipsGUI[i].transform.GetChild(2).GetChild(x).gameObject.GetComponent<Image>().sprite = emptyImage;
                 }
+            }
+            if (ship.targetDock != null) {
+                ownedShipsGUI[i].transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = "..." + ship.targetDock.name;
+            }
+            else {
+                ownedShipsGUI[i].transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = ship.dock.name;
             }
         }
 
