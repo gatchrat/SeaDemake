@@ -178,7 +178,7 @@ public class GameMaster : MonoBehaviour {
             curHarbourUI.transform.SetParent(HarbourParent, false);
             curHarbourUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(3 + 4 * harbour.pos.x, -2 - 4 * harbour.pos.y, 0);
             curHarbourUI.name = harbour.name;
-            curHarbourUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = harbour.name;
+            curHarbourUI.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = harbour.name;
             curHarbourUI.SetActive(true);
             HarbourGUI.Add(curHarbourUI);
         }
@@ -195,7 +195,7 @@ public class GameMaster : MonoBehaviour {
             curShipUI.transform.SetParent(HarbourParent, false);
             curShipUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(3 + 4 * ship.pos.x, -2 - 4 * ship.pos.y, 0);
             curShipUI.name = ship.name;
-            curShipUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ship.name;
+            curShipUI.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = ship.name;
             curShipUI.SetActive(true);
             ShipsGUI.Add(curShipUI);
         }
