@@ -20,11 +20,11 @@ public static class Company {
         companyUiUpdate.Invoke();
     }
     public static void refreshAvailableContracts() {
-        //generate max up to 10 contracts
-        //add one when under 10
+        //generate max up to 6 contracts
+        //add one when under 6
         //otherwise replace 3
-        //never go above 15 overall contracts
-        if (openContracts.Count < 10 && openContracts.Count + acceptedContracts.Count < 15) {
+        //never go above 8 overall contracts
+        if (openContracts.Count < 6 && openContracts.Count + acceptedContracts.Count < 8) {
             openContracts.Add(ContractFactory.generateContract(allHarbours));
         }
         else {
