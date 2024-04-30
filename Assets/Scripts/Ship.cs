@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,12 +19,24 @@ public class Ship {
     public Harbour targetDock;
     private List<Vector2Int> curPath = null;
     private List<GameObject> curPathObjects = null;
+    private List<String> potentialNames = new List<string>();
     public bool isMoving() {
         return dock == null;
     }
     public Ship() {
-        name = UnityEngine.Random.Range(0, 100) + "";
-        price = (int)(standardPrice * (UnityEngine.Random.Range(60f, 140f) / 100f));
+        inventorySize = UnityEngine.Random.Range(1, 5);
+        price = (int)(standardPrice * (UnityEngine.Random.Range(60f, 140f) / 100f) * inventorySize);
+        string path = Application.streamingAssetsPath + "/female.txt";
+        //Read the text from directly from the test.txt file
+        StreamReader reader = new StreamReader(path);
+        String curName = reader.ReadLine();
+        while (curName != null) {
+            potentialNames.Add(curName);
+            curName = reader.ReadLine();
+        }
+        name = potentialNames[UnityEngine.Random.Range(0, potentialNames.Count)];
+
+        reader.Close();
     }
     public void setPath(List<Vector2Int> newPath) {
         curPath = newPath;
