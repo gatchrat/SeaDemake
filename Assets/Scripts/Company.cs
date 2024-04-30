@@ -42,10 +42,12 @@ public static class Company {
         }
         for (int i = 0; i < acceptedContracts.Count; i++) {
             acceptedContracts[i].daysToComplete--;
+            acceptedContracts[i].updateGUI();
             if (acceptedContracts[i].daysToComplete < 0) {
                 failContract(acceptedContracts[i]);
+                i--;
             }
-            i--;
+
         }
 
         companyUiUpdate.Invoke();

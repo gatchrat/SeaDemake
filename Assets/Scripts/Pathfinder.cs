@@ -129,7 +129,6 @@ public class Pathfinder : MonoBehaviour {
             bestNode.visited = true;
             if (bestNode.pos.x == end.x && bestNode.pos.y == end.y) {
                 found = true;
-                Debug.Log("found path with length" + bestNode.pathToHere.Count);
                 return bestNode.pathToHere;
             }
             foreach (Node neighbor in getNeighboors(bestNode)) {

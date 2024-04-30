@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,6 +47,7 @@ public class Contract {
                     break;
             }
         }
+        gui.transform.GetChild(8).gameObject.GetComponent<TextMeshProUGUI>().text = daysToComplete + "";
     }
     //possibly keep deliverd goods
 }
