@@ -207,7 +207,13 @@ public class Pathfinder : MonoBehaviour {
             if (pos.x < 0) {
                 x = 335;
             }
-            backlog.Add(map[x, y]);
+            if (pos.y < 0 || pos.y > 188) {
+
+            }
+            else {
+                backlog.Add(map[x, y]);
+            }
+
         }
         return backlog;
     }
