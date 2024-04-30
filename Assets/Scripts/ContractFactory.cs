@@ -35,7 +35,7 @@ public static class ContractFactory {
         //ensure a viable day count with the unlocked harbours
         c.daysToComplete = (int)(Random.Range(1f, 4f) * (float)Pathfinder.findPath(getRandomButNotThis(c.targetHarbour, allHarbours).pos, c.targetHarbour.pos).Count);
         //reward scales with difficulty, but scales down the reward for easy timings
-        c.reward = (int)(baseRewardPerPiece * c.toDeliverGoods.Count * (250 / c.daysToComplete));
+        c.reward = (int)((float)baseRewardPerPiece * (float)c.toDeliverGoods.Count * (250 / (float)c.daysToComplete));
         c.penalty = c.reward / Random.Range(1, 5);
 
         return c;
