@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class Company {
@@ -9,6 +10,7 @@ public static class Company {
     public static List<Contract> openContracts = new List<Contract>();
     public static List<Contract> acceptedContracts = new List<Contract>();
     public static List<Harbour> allHarbours;
+    public static List<Harbour> lockedHarbours = new List<Harbour>();
     public static int curMoney = 0;
     public delegate void companyUiUpdateEvent();
     public static event companyUiUpdateEvent companyUiUpdate;
@@ -25,7 +27,7 @@ public static class Company {
         //otherwise replace 3
         //never go above 8 overall contracts
         if (openContracts.Count < 6 && openContracts.Count + acceptedContracts.Count < 8) {
-            openContracts.Add(ContractFactory.generateContract(allHarbours));
+            openContracts.Add(ContractFactory.generateContract(allHarbours.Concat(lockedHarbours).ToList()));
         }
         else {
             for (int i = 0; i < Math.Min(openContracts.Count - 1, 2); i++) {

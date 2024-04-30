@@ -38,15 +38,32 @@ public class GameMaster : MonoBehaviour {
     //Assumed to be in correct order
     public List<(Harbour, int)> HarboursToUnlock = new List<(Harbour, int)>();
     void Start() {
-        Company.curMoney = 10000;
+        Company.curMoney = 1000000;
         Company.ownedShips = new List<Ship>();
         Company.acceptedContracts = new List<Contract>();
         Clock.Instance.tick += Tick;
         Company.companyUiUpdate += updateAllUI;
-        Company.allHarbours = new List<Harbour>();
-        Company.allHarbours.Add(new Harbour(new Vector2Int(164, 56), "Hamburg"));
-        Company.allHarbours.Add(new Harbour(new Vector2Int(299, 146), "Sydney"));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(158, 59), "Felixstowe"), 2000));
+        Company.allHarbours = new List<Harbour> {
+            new Harbour(new Vector2Int(164, 56), "Hamburg"),
+            new Harbour(new Vector2Int(156, 73), "Valencia")
+        };
+
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(299, 146), "Sydney"), 12000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(98, 67), "Halifax"), 15000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(82, 105), "Balboa"), 20000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(39, 65), "Vancouver"), 25000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(321, 148), "Auckland"), 35000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(271, 83), "Shanghai"), 50000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(231, 106), "Colombo"), 75000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(157, 107), "Lagos"), 100000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(193, 93), "Jeddah"), 150000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(111, 137), "Santos"), 200000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(187, 138), "Durban"), 250000));
+        HarboursToUnlock.Add((new Harbour(new Vector2Int(106, 40), "Nuuk"), 500000));
+
+        foreach ((Harbour, int) harbour in HarboursToUnlock) {
+            Company.lockedHarbours.Add(harbour.Item1);
+        }
         Company.refreshAvailableShips();
         Company.refreshAvailableContracts();
         regenerateHarbourUI();
@@ -309,19 +326,19 @@ public class GameMaster : MonoBehaviour {
                 foreach ((TypeOfGoods, int) item in harbour.prices) {
                     switch (item.Item1) {
                         case TypeOfGoods.Coal:
-                            newGUI.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                            newGUI.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "";
                             break;
                         case TypeOfGoods.Food:
-                            newGUI.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                            newGUI.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "";
                             break;
                         case TypeOfGoods.Iron:
-                            newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                            newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "";
                             break;
                         case TypeOfGoods.Medicine:
-                            newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                            newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "";
                             break;
                         case TypeOfGoods.Wood:
-                            newGUI.transform.GetChild(5).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                            newGUI.transform.GetChild(5).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "";
                             break;
                     }
                 }
