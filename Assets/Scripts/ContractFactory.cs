@@ -6,7 +6,7 @@ public static class ContractFactory {
     static int counter = 1;
     public static Contract generateContract(List<Harbour> allHarbours) {
         Contract c = new Contract();
-        for (int i = 0; i < Random.Range(0, 5); i++) {
+        for (int i = 0; i < Random.Range(1, 6); i++) {
             switch (Random.Range(0, 5)) {
 
                 case 0:
@@ -28,7 +28,7 @@ public static class ContractFactory {
         }
         float baseRewardPerPiece = Random.Range(1500, 4000);
 
-        c.penalty = c.reward / Random.Range(1, 5);
+
         c.name = counter + "";
         counter++;
         c.targetHarbour = allHarbours[Random.Range(0, allHarbours.Count)];
@@ -36,6 +36,7 @@ public static class ContractFactory {
         c.daysToComplete = (int)(Random.Range(1f, 4f) * (float)Pathfinder.findPath(getRandomButNotThis(c.targetHarbour, allHarbours).pos, c.targetHarbour.pos).Count);
         //reward scales with difficulty, but scales down the reward for easy timings
         c.reward = (int)(baseRewardPerPiece * c.toDeliverGoods.Count * (250 / c.daysToComplete));
+        c.penalty = c.reward / Random.Range(1, 5);
 
         return c;
     }
