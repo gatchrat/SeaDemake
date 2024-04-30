@@ -123,7 +123,7 @@ public class GameMaster : MonoBehaviour {
                 else {
                     newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = ship.dock.name;
                 }
-                newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = ship.runningCosts + "$";
+                newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = "-" + ship.runningCosts + "$";
                 for (int i = 0; i < 4 - ship.inventorySize; i++) {
                     Destroy(newGUI.transform.GetChild(2).GetChild(3 - i).gameObject);
                 }
@@ -226,7 +226,7 @@ public class GameMaster : MonoBehaviour {
                 newGUI.transform.SetParent(availableShipParent);
                 newGUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ship.name;
                 newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = ship.price + "$";
-                newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = ship.runningCosts + "$";
+                newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = "-" + ship.runningCosts + "$";
                 for (int i = 0; i < 4 - ship.inventorySize; i++) {
                     Destroy(newGUI.transform.GetChild(2).GetChild(3 - i).gameObject);
                 }
