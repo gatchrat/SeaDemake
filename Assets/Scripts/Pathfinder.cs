@@ -32,6 +32,18 @@ public class Pathfinder : MonoBehaviour {
         //spawnPieces(path);
         //spawnPieces(findPath(new Vector2Int(150, 60), new Vector2Int(200, 100)));
     }
+    void Update() {
+        /*Vector2 screen_pos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        Vector2 anchorPos = screen_pos - new Vector2(Pathfinder.Instance.parentT.position.x, Pathfinder.Instance.parentT.position.y);
+        anchorPos = new Vector2(anchorPos.x / Pathfinder.Instance.parentT.lossyScale.x + 671, anchorPos.y / Pathfinder.Instance.parentT.lossyScale.y - 379);
+
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            Debug.Log(PixelToLogicPos(new Vector2Int((int)anchorPos.x, (int)anchorPos.y)));
+            GameObject curPiece = GameObject.Instantiate(Pathfinder.Instance.pathPiece);
+            curPiece.transform.SetParent(Pathfinder.Instance.parentT, false);
+            curPiece.GetComponent<RectTransform>().anchoredPosition = new Vector3(anchorPos.x, anchorPos.y, 0);
+        }*/
+    }
     public static List<GameObject> spawnPieces(List<Vector2Int> path) {
         List<GameObject> pathObjects = new List<GameObject>();
         foreach (Vector2Int pos in path) {
