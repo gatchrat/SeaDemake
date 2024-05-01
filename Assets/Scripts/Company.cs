@@ -56,6 +56,9 @@ public static class Company {
         //advance all accepted contracts
     }
     public static String buyShip(String shipname, String harbourName) {
+        if (ownedShips.Count == 9) {
+            return "You already own the max. number of ships. Remember that you can scrap older ships";
+        }
         Ship toBuy = null;
         foreach (Ship ship in availableShips) {
             if (ship.name.ToLower() == shipname.ToLower()) {
