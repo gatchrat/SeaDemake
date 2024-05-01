@@ -20,6 +20,7 @@ public class GameMaster : MonoBehaviour {
     public Transform HarbourParent;
     public Transform contractParent;
     public GameObject contractPrefab;
+    public UILineRenderer LR;
     public Transform pricesParent;
     public GameObject pricesPrefab;
     public Sprite emptyImage;
@@ -35,10 +36,14 @@ public class GameMaster : MonoBehaviour {
     private List<GameObject> HarbourGUI = new List<GameObject>();
     private List<GameObject> availableShipsGUI = new List<GameObject>();
     private List<GameObject> pricesGUI = new List<GameObject>();
+    private List<int> moneyHistory = new List<int>();
+    private int maxMoney;
     //Assumed to be in correct order
-    public List<(Harbour, int)> HarboursToUnlock = new List<(Harbour, int)>();
+    public List<(Harbour, int)> HarboursToUnlock;
     void Start() {
-        Company.curMoney = 1000000;
+        Company.curMoney = 10000;
+        moneyHistory.Add(Company.curMoney);
+        maxMoney = Company.curMoney;
         Company.ownedShips = new List<Ship>();
         Company.acceptedContracts = new List<Contract>();
         Clock.Instance.tick += Tick;
@@ -47,19 +52,20 @@ public class GameMaster : MonoBehaviour {
             new Harbour(new Vector2Int(164, 56), "Hamburg"),
             new Harbour(new Vector2Int(156, 73), "Valencia")
         };
-
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(299, 146), "Sydney"), 12000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(98, 67), "Halifax"), 15000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(82, 105), "Balboa"), 20000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(39, 65), "Vancouver"), 25000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(321, 148), "Auckland"), 35000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(271, 83), "Shanghai"), 50000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(231, 106), "Colombo"), 75000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(157, 107), "Lagos"), 100000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(193, 93), "Jeddah"), 150000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(111, 137), "Santos"), 200000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(187, 138), "Durban"), 250000));
-        HarboursToUnlock.Add((new Harbour(new Vector2Int(106, 40), "Nuuk"), 500000));
+        HarboursToUnlock = new List<(Harbour, int)> {
+            (new Harbour(new Vector2Int(299, 146), "Sydney"), 12000),
+            (new Harbour(new Vector2Int(98, 67), "Halifax"), 15000),
+            (new Harbour(new Vector2Int(82, 105), "Balboa"), 20000),
+            (new Harbour(new Vector2Int(39, 65), "Vancouver"), 25000),
+            (new Harbour(new Vector2Int(321, 148), "Auckland"), 35000),
+            (new Harbour(new Vector2Int(271, 83), "Shanghai"), 50000),
+            (new Harbour(new Vector2Int(231, 106), "Colombo"), 75000),
+            (new Harbour(new Vector2Int(157, 107), "Lagos"), 100000),
+            (new Harbour(new Vector2Int(193, 93), "Jeddah"), 150000),
+            (new Harbour(new Vector2Int(111, 137), "Santos"), 200000),
+            (new Harbour(new Vector2Int(187, 138), "Durban"), 250000),
+            (new Harbour(new Vector2Int(106, 40), "Nuuk"), 500000)
+        };
 
         foreach ((Harbour, int) harbour in HarboursToUnlock) {
             Company.lockedHarbours.Add(harbour.Item1);
@@ -132,13 +138,32 @@ public class GameMaster : MonoBehaviour {
         updateAllUI();
     }
     private void updateAllUI() {
-        moneyText.text = "Capital: " + Company.curMoney.ToString() + "$";
-        timeText.text = "Day " + curDay.ToString();
+
+        timeText.text = curDay.ToString();
         updateAvailableShips();
         updateOwnedShips();
         updateContractUI();
         regenerateShipUI();
-
+        updateMoneyUI();
+    }
+    private void updateMoneyUI() {
+        moneyHistory.Add(Company.curMoney);
+        if (Company.curMoney > maxMoney) {
+            maxMoney = Company.curMoney;
+        }
+        Vector2[] points = new Vector2[moneyHistory.Count];
+        float maxX = 1344;
+        float maxY = 100;
+        float width = maxX / (moneyHistory.Count - 1);
+        float curX = 0;
+        for (int i = 0; i < moneyHistory.Count; i++) {
+            points[i] = new Vector2(curX, -8 - maxY + (float)moneyHistory[i] / (float)maxMoney * maxY);
+            curX += width;
+        }
+        LR.points = points;
+        LR.SetAllDirty();
+        moneyText.text = Company.curMoney.ToString() + "$";
+        moneyText.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(LR.points[LR.points.Length - 1].x, LR.points[LR.points.Length - 1].y, 0);
     }
     private void updateOwnedShips() {
         List<String> ownedShips = new List<string>();

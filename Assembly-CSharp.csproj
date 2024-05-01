@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\BackgroundRenderer.cs" />
     <Compile Include="Assets\Scripts\GameMaster.cs" />
     <Compile Include="Assets\Scripts\Clock.cs" />
+    <Compile Include="Assets\Scripts\UILineRenderer.cs" />
     <Compile Include="Assets\Scripts\Company.cs" />
     <Compile Include="Assets\Scripts\Contract.cs" />
     <Compile Include="Assets\Scripts\ContractFactory.cs" />
