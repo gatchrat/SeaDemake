@@ -64,6 +64,37 @@ public class GameMaster : MonoBehaviour {
         foreach ((Harbour, int) harbour in HarboursToUnlock) {
             Company.lockedHarbours.Add(harbour.Item1);
         }
+
+
+        //add "tutorial" ship and contracts
+        Contract tutorialContract1 = new Contract {
+            daysToComplete = 100,
+            name = "0",
+            reward = 5000,
+            penalty = 10,
+            targetHarbour = Company.allHarbours[0]
+        };
+        tutorialContract1.toDeliverGoods.Add(TypeOfGoods.Food);
+        Company.openContracts.Add(tutorialContract1);
+
+        Contract tutorialContract2 = new Contract {
+            daysToComplete = 100,
+            name = "1",
+            reward = 5000,
+            penalty = 10,
+            targetHarbour = Company.allHarbours[1]
+        };
+        tutorialContract2.toDeliverGoods.Add(TypeOfGoods.Medicine);
+        Company.openContracts.Add(tutorialContract2);
+
+        Ship tutorialShip = new Ship {
+            inventorySize = 1,
+            name = "Starter",
+            price = 6500,
+            runningCosts = 1
+        };
+        Company.availableShips.Add(tutorialShip);
+
         Company.refreshAvailableShips();
         Company.refreshAvailableContracts();
         regenerateHarbourUI();

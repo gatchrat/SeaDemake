@@ -6,7 +6,7 @@ using UnityEngine;
 
 public static class Company {
     public static List<Ship> ownedShips;
-    public static List<Ship> availableShips;
+    public static List<Ship> availableShips = new List<Ship>();
     public static List<Contract> openContracts = new List<Contract>();
     public static List<Contract> acceptedContracts = new List<Contract>();
     public static List<Harbour> allHarbours;
@@ -15,7 +15,6 @@ public static class Company {
     public delegate void companyUiUpdateEvent();
     public static event companyUiUpdateEvent companyUiUpdate;
     public static void refreshAvailableShips() {
-        availableShips = new List<Ship>();
         availableShips.Add(new Ship());
         availableShips.Add(new Ship());
         availableShips.Add(new Ship());

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class ContractFactory {
-    static int counter = 1;
+    static int counter = 2;
     public static Contract generateContract(List<Harbour> allHarbours) {
         Contract c = new Contract();
         for (int i = 0; i < Random.Range(1, 6); i++) {
