@@ -30,6 +30,7 @@ public class GameMaster : MonoBehaviour {
     public Sprite MedicineImage;
     public Sprite CoalImage;
     public Sprite AcceptedImage;
+    public List<AudioClip> audioClips;
     private List<GameObject> contractGUI = new List<GameObject>();
     private List<GameObject> ownedShipsGUI = new List<GameObject>();
     private List<GameObject> ShipsGUI = new List<GameObject>();
@@ -38,9 +39,11 @@ public class GameMaster : MonoBehaviour {
     private List<GameObject> pricesGUI = new List<GameObject>();
     private List<int> moneyHistory = new List<int>();
     private int maxMoney;
+    public static GameMaster Instance;
     //Assumed to be in correct order
     public List<(Harbour, int)> HarboursToUnlock;
     void Start() {
+        Instance = this;
         Company.curMoney = 10000;
         moneyHistory.Add(Company.curMoney);
         maxMoney = Company.curMoney;
@@ -131,6 +134,7 @@ public class GameMaster : MonoBehaviour {
         if (HarboursToUnlock.Count > 0 && Company.curMoney > HarboursToUnlock[0].Item2) {
             Company.allHarbours.Add(HarboursToUnlock[0].Item1);
             Logger.addLog("Unlocked new Harbour " + HarboursToUnlock[0].Item1.name, Color.green);
+            GameMaster.Instance.playAudio(AudioClipType.harbour);
             HarboursToUnlock.RemoveAt(0);
             regenerateHarbourUI();
             updatePricesUI();
@@ -427,6 +431,55 @@ public class GameMaster : MonoBehaviour {
                 }
             }
 
+        }
+    }
+    public void playAudio(AudioClipType adc) {
+        switch (adc) {
+            case AudioClipType.scribble:
+                GetComponent<AudioSource>().clip = audioClips[0];
+                GetComponent<AudioSource>().volume = 1f;
+                GetComponent<AudioSource>().Play();
+                break;
+            case AudioClipType.buzzer:
+                GetComponent<AudioSource>().clip = audioClips[1];
+                GetComponent<AudioSource>().volume = 1f;
+                GetComponent<AudioSource>().Play();
+                break;
+            case AudioClipType.chaching:
+                GetComponent<AudioSource>().clip = audioClips[2];
+                GetComponent<AudioSource>().volume = 0.4f;
+                GetComponent<AudioSource>().Play();
+                break;
+            case AudioClipType.clapping:
+                GetComponent<AudioSource>().clip = audioClips[3];
+                GetComponent<AudioSource>().volume = 0.5f;
+                GetComponent<AudioSource>().Play();
+                break;
+            case AudioClipType.harbour:
+                GetComponent<AudioSource>().clip = audioClips[4];
+                GetComponent<AudioSource>().volume = 1f;
+                GetComponent<AudioSource>().Play();
+                break;
+            case AudioClipType.loose:
+                GetComponent<AudioSource>().clip = audioClips[5];
+                GetComponent<AudioSource>().volume = 1f;
+                GetComponent<AudioSource>().Play();
+                break;
+            case AudioClipType.scrapping:
+                GetComponent<AudioSource>().clip = audioClips[6];
+                GetComponent<AudioSource>().volume = 1f;
+                GetComponent<AudioSource>().Play();
+                break;
+            case AudioClipType.troet:
+                GetComponent<AudioSource>().clip = audioClips[7];
+                GetComponent<AudioSource>().volume = 0.5f;
+                GetComponent<AudioSource>().Play();
+                break;
+            case AudioClipType.truck:
+                GetComponent<AudioSource>().clip = audioClips[8];
+                GetComponent<AudioSource>().volume = 1f;
+                GetComponent<AudioSource>().Play();
+                break;
         }
     }
 }

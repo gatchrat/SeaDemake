@@ -54,6 +54,7 @@ public static class Company {
         if (curMoney < 0) {
             Logger.addLog("Your company went bankrupt, the game has ended. Type Exit to close the game.", Color.red);
             Clock.disable();
+            GameMaster.Instance.playAudio(AudioClipType.loose);
         }
         companyUiUpdate.Invoke();
         //advance all accepted contracts
@@ -90,17 +91,20 @@ public static class Company {
             toBuy.pos = toSpawn.pos;
             toBuy.dock = toSpawn;
             companyUiUpdate.Invoke();
+            GameMaster.Instance.playAudio(AudioClipType.clapping);
             return "Ship successfully aquired";
         }
     }
     public static void completeContract(Contract toComplete) {
         curMoney += toComplete.reward;
         Logger.addLog("Contract " + toComplete.name + " completed. Reward: " + toComplete.reward + "$", Color.green);
+        GameMaster.Instance.playAudio(AudioClipType.chaching);
         acceptedContracts.Remove(toComplete);
     }
     public static void failContract(Contract toComplete) {
         curMoney -= toComplete.penalty;
         Logger.addLog("Contract " + toComplete.name + " failed. Penalty: " + toComplete.penalty + "$", Color.red);
+        GameMaster.Instance.playAudio(AudioClipType.buzzer);
         acceptedContracts.Remove(toComplete);
     }
     public static String sendShip(String shipname, String harbourName) {
@@ -125,6 +129,7 @@ public static class Company {
         toSend.targetDock = toDock;
         toSend.setPath(Pathfinder.findPath(toSend.pos, toDock.pos));
         companyUiUpdate.Invoke();
+        GameMaster.Instance.playAudio(AudioClipType.troet);
         return "Ship successfully send";
 
     }
@@ -163,6 +168,7 @@ public static class Company {
         contract.setAccepted();
         openContracts.Remove(contract);
         companyUiUpdate.Invoke();
+        GameMaster.Instance.playAudio(AudioClipType.scribble);
         return "The Contract was accepted";
     }
     public static String scrap(String shipname) {
@@ -178,6 +184,7 @@ public static class Company {
         ownedShips.Remove(toScrap);
         curMoney += 1000;
         companyUiUpdate.Invoke();
+        GameMaster.Instance.playAudio(AudioClipType.scrapping);
         return "The Ship was Scrapped, 1000$ in material cost was recovered";
     }
     public static String unload(String shipname, String goodName, String countAsString) {
@@ -242,6 +249,7 @@ public static class Company {
         }
         curMoney += price * count;
         companyUiUpdate.Invoke();
+        GameMaster.Instance.playAudio(AudioClipType.truck);
         return "The goods where sold successfully";
     }
     public static String load(String shipname, String goodName, String countAsString) {
@@ -306,6 +314,7 @@ public static class Company {
         }
         curMoney -= price * count;
         companyUiUpdate.Invoke();
+        GameMaster.Instance.playAudio(AudioClipType.truck);
         return "The Ship was loaded and Capital removed";
     }
     public static String load(String shipname, String goodName) {
