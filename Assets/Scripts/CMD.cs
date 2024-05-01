@@ -6,9 +6,14 @@ using UnityEngine;
 using UnityEngine.UI;
 public class CMD : MonoBehaviour {
     private String curLine = ">";
+    private List<String> curLineHistory = new List<string>();
     private String History = "";
+    private int HistoryIndex = 0;
     public TextMeshProUGUI text;
     private int maxLines = 20;
+    void Start() {
+        curLineHistory.Add(">");
+    }
     void Update() {
         updateText();
     }
@@ -45,10 +50,16 @@ public class CMD : MonoBehaviour {
                 return;
             }
             else if (evt.keyCode == KeyCode.Return) {
+                curLineHistory.Add(curLine);
                 History = History + "\n" + curLine;
                 History += "\n" + CommandInterpreter.interprete(curLine);
                 curLine = ">";
+                HistoryIndex = curLineHistory.Count;
                 return;
+            }
+            else if (evt.keyCode == KeyCode.UpArrow) {
+                HistoryIndex = Math.Max(0, HistoryIndex - 1);
+                curLine = curLineHistory[HistoryIndex];
             }
             else {
                 char c = evt.character;
