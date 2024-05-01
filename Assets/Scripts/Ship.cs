@@ -25,6 +25,7 @@ public class Ship {
     }
     public Ship() {
         inventorySize = UnityEngine.Random.Range(1, 5);
+        runningCosts = UnityEngine.Random.Range(1, 10);
         price = (int)(standardPrice * (UnityEngine.Random.Range(60f, 140f) / 100f) * inventorySize);
         string path = Application.streamingAssetsPath + "/female.txt";
         //Read the text from directly from the test.txt file
@@ -64,21 +65,22 @@ public class Ship {
         }
     }
     private void unloadContracts(List<Contract> contracts) {
-        foreach (Contract contract in contracts) {
-            if (contract.targetHarbour == dock) {
-                for (int i = 0; i < contract.toDeliverGoods.Count; i++) {
+        for (int y = 0; y < contracts.Count; y++) {
+            if (contracts[y].targetHarbour == dock) {
+                for (int i = 0; i < contracts[y].toDeliverGoods.Count; i++) {
                     for (int x = 0; x < content.Count; x++) {
-                        if (contract.toDeliverGoods[i] == content[x]) {
+                        if (contracts[y].toDeliverGoods[i] == content[x]) {
                             content.Remove(content[x]);
-                            contract.deliver(contract.toDeliverGoods[i]);
+                            contracts[y].deliver(contracts[y].toDeliverGoods[i]);
                             x--;
                             i--;
 
                         }
                     }
                 }
-                if (contract.toDeliverGoods.Count == 0) {
-                    Company.completeContract(contract);
+                if (contracts[y].toDeliverGoods.Count == 0) {
+                    Company.completeContract(contracts[y]);
+                    y--;
                 }
             }
         }
