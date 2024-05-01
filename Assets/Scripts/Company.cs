@@ -16,8 +16,9 @@ public static class Company {
     public static event companyUiUpdateEvent companyUiUpdate;
     public static void refreshAvailableShips() {
         availableShips.Add(new Ship());
-        availableShips.Add(new Ship());
-        availableShips.Add(new Ship());
+        if (availableShips.Count > 9) {
+            availableShips.RemoveAt(0);
+        }
         companyUiUpdate.Invoke();
     }
     public static void refreshAvailableContracts() {
