@@ -20,4 +20,4 @@ The clips are often edited, but these are the original sources:
 - Atlantic Ocean Waves by tim.kahn -- https://freesound.org/s/197714/ -- License: Attribution 4.0
 - 110809-unload in neuenkirchen.wav by miastodzwiekow -- https://freesound.org/s/127287/ -- License: Attribution 4.0
 ### Code
-Custom fork of [this script](https://github.com/Radishmouse22/UILineRenderer/blob/main/UILineRenderer.cs) used for an overlay canvase line renderer for the capital history
+Custom [fork](https://github.com/gatchrat/UILineRenderer) of [this script](https://github.com/Radishmouse22/UILineRenderer/blob/main/UILineRenderer.cs) used for an overlay canvase line renderer for the capital history
