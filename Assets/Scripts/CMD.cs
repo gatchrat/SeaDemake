@@ -61,6 +61,15 @@ public class CMD : MonoBehaviour {
                 HistoryIndex = Math.Max(0, HistoryIndex - 1);
                 curLine = curLineHistory[HistoryIndex];
             }
+            else if (evt.keyCode == KeyCode.DownArrow) {
+                if (HistoryIndex >= curLineHistory.Count - 1) {
+                    curLine = ">";
+                }
+                else {
+                    HistoryIndex++;
+                    curLine = curLineHistory[HistoryIndex];
+                }
+            }
             else {
                 char c = evt.character;
                 if (c >= 32 && c <= 126) {
