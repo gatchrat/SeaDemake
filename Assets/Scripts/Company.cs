@@ -51,7 +51,10 @@ public static class Company {
             }
 
         }
-
+        if (curMoney < 0) {
+            Logger.addLog("Your company went bankrupt, the game has ended. Type Exit to close the game.", Color.red);
+            Clock.disable();
+        }
         companyUiUpdate.Invoke();
         //advance all accepted contracts
     }

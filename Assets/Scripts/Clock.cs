@@ -9,6 +9,7 @@ public class Clock : MonoBehaviour {
     float curTimer;
     int tickCount = 0;
     Boolean started = false;
+    Boolean enabled = true;
     public static Clock Instance;
     public delegate void TickEvent();
     public event TickEvent tick;
@@ -34,8 +35,15 @@ public class Clock : MonoBehaviour {
         }
         return "Not a valid Speed";
     }
+    public static void disable() {
+        Clock.Instance.stopClock();
+        Clock.Instance.enabled = false;
+    }
     public void startClock() {
-        started = true;
+        if (enabled) {
+            started = true;
+        }
+
     }
     public void stopClock() {
         started = false;
