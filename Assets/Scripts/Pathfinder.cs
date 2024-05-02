@@ -11,16 +11,17 @@ public class Pathfinder : MonoBehaviour {
     // Start is called before the first frame update
     //(x,y), (0,0) is top left
     //(336,189)
-    static Node[,] map = new Node[336, 189];
+    static readonly Node[,] map = new Node[336, 189];
     static Pathfinder Instance;
     void Awake() {
         Instance = this;
-        List<Vector2Int> path = new List<Vector2Int>();
+        List<Vector2Int> path = new();
         for (int i = 0; i < 336; i++) {
             for (int y = 0; y < 189; y++) {
-                map[i, y] = new Node();
-                map[i, y].isWater = isWater(worldMap.GetPixel(logicToPixelPos(new Vector2Int(i, y)).x, logicToPixelPos(new Vector2Int(i, y)).y));
-                map[i, y].pos = new Vector2Int(i, y);
+                map[i, y] = new Node {
+                    isWater = IsWater(worldMap.GetPixel(LogicToPixelPos(new Vector2Int(i, y)).x, LogicToPixelPos(new Vector2Int(i, y)).y)),
+                    pos = new Vector2Int(i, y)
+                };
                 if (map[i, y].isWater) {
                     if (i >= 299 && y >= 146) {
                         path.Add(new Vector2Int(i, y));
@@ -44,8 +45,8 @@ public class Pathfinder : MonoBehaviour {
             curPiece.GetComponent<RectTransform>().anchoredPosition = new Vector3(anchorPos.x, anchorPos.y, 0);
         }*/
     }
-    public static List<GameObject> spawnPieces(List<Vector2Int> path) {
-        List<GameObject> pathObjects = new List<GameObject>();
+    public static List<GameObject> SpawnPieces(List<Vector2Int> path) {
+        List<GameObject> pathObjects = new();
         foreach (Vector2Int pos in path) {
             GameObject curPiece = GameObject.Instantiate(Pathfinder.Instance.pathPiece);
             curPiece.transform.SetParent(Pathfinder.Instance.parentT, false);
@@ -55,20 +56,14 @@ public class Pathfinder : MonoBehaviour {
         }
         return pathObjects;
     }
-    public static float OctileDistance(Vector2Int from, Vector2Int to) {
-        int dx = Mathf.Abs(to.x - from.x);
-        int dy = Mathf.Abs(to.y - from.y);
-        //return Mathf.Max(dx, dy) + (Mathf.Sqrt(2) - 1) * Mathf.Min(dx, dy);
-        return Vector2Int.Distance(from, to);
-    }
-    static float heuristic(Vector2Int from, Vector2Int to) {
+    static float Heuristic(Vector2Int from, Vector2Int to) {
         int xDiff = Math.Abs(from.x - to.x);
         int yDiff = Math.Abs(from.y - to.y);
         float heur = Math.Min(xDiff, yDiff) * 1.5f;
         heur += (Math.Max(xDiff, yDiff) - Math.Min(xDiff, yDiff));
         return heur + 3f;
     }
-    public static List<Vector2Int> findPath(Vector2Int start, Vector2Int end) {
+    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int end) {
         if (!map[start.x, start.y].isWater || !map[end.x, end.y].isWater) {
             Debug.Log("Cant path on land");
         }
@@ -79,17 +74,17 @@ public class Pathfinder : MonoBehaviour {
                 map[i, y].pathToHere = new List<Vector2Int>();
                 map[i, y].visited = false;
                 //map[i, y].guestimate = Math.Abs(i - end.x) + Math.Abs(y - end.y);
-                map[i, y].guestimate = heuristic(new Vector2Int(i, y), end);
+                map[i, y].guestimate = Heuristic(new Vector2Int(i, y), end);
             }
         }
-        List<Node> backlog = new List<Node>();
+        List<Node> backlog = new();
         map[start.x, start.y].distance = 0;
         map[start.x, start.y].visited = true;
         //add neighboors
-        foreach (Node neighbor in getNeighboors(map[start.x, start.y])) {
+        foreach (Node neighbor in GetNeighboors(map[start.x, start.y])) {
             if (neighbor.isWater && !neighbor.visited) {
-                if (neighbor.distance > map[start.x, start.y].distance - OctileDistance(map[start.x, start.y].pos, neighbor.pos)) {
-                    neighbor.distance = map[start.x, start.y].distance + OctileDistance(map[start.x, start.y].pos, neighbor.pos);
+                if (neighbor.distance > map[start.x, start.y].distance - Vector2Int.Distance(map[start.x, start.y].pos, neighbor.pos)) {
+                    neighbor.distance = map[start.x, start.y].distance + Vector2Int.Distance(map[start.x, start.y].pos, neighbor.pos);
                     //workaround to not pass the list itself but a copy
                     neighbor.pathToHere = map[start.x, start.y].pathToHere.GetRange(0, map[start.x, start.y].pathToHere.Count); ;
                     neighbor.pathToHere.Add(map[start.x, start.y].pos);
@@ -101,10 +96,10 @@ public class Pathfinder : MonoBehaviour {
                 }
             }
         }
-        foreach (Node neighbor in getdiagonalNeighboors(map[start.x, start.y])) {
+        foreach (Node neighbor in GetdiagonalNeighboors(map[start.x, start.y])) {
             if (neighbor.isWater && !neighbor.visited) {
-                if (neighbor.distance > map[start.x, start.y].distance - OctileDistance(map[start.x, start.y].pos, neighbor.pos)) {
-                    neighbor.distance = map[start.x, start.y].distance + OctileDistance(map[start.x, start.y].pos, neighbor.pos);
+                if (neighbor.distance > map[start.x, start.y].distance - Vector2Int.Distance(map[start.x, start.y].pos, neighbor.pos)) {
+                    neighbor.distance = map[start.x, start.y].distance + Vector2Int.Distance(map[start.x, start.y].pos, neighbor.pos);
                     //workaround to not pass the list itself but a copy
                     neighbor.pathToHere = map[start.x, start.y].pathToHere.GetRange(0, map[start.x, start.y].pathToHere.Count); ;
                     neighbor.pathToHere.Add(map[start.x, start.y].pos);
@@ -116,8 +111,7 @@ public class Pathfinder : MonoBehaviour {
                 }
             }
         }
-        bool found = false;
-        while (backlog.Count > 0 && !found) {
+        while (backlog.Count > 0) {
             float best = 999999;
             float bestPath = 999999;
             Node bestNode = null;
@@ -140,13 +134,12 @@ public class Pathfinder : MonoBehaviour {
 
             bestNode.visited = true;
             if (bestNode.pos.x == end.x && bestNode.pos.y == end.y) {
-                found = true;
                 return bestNode.pathToHere;
             }
-            foreach (Node neighbor in getNeighboors(bestNode)) {
+            foreach (Node neighbor in GetNeighboors(bestNode)) {
                 if (neighbor.isWater && !neighbor.visited) {
-                    if (neighbor.distance > bestNode.distance + OctileDistance(bestNode.pos, neighbor.pos)) {
-                        neighbor.distance = bestNode.distance + OctileDistance(bestNode.pos, neighbor.pos);
+                    if (neighbor.distance > bestNode.distance + Vector2Int.Distance(bestNode.pos, neighbor.pos)) {
+                        neighbor.distance = bestNode.distance + Vector2Int.Distance(bestNode.pos, neighbor.pos);
                         //workaround to not pass the list itself but a copy
                         neighbor.pathToHere = bestNode.pathToHere.GetRange(0, bestNode.pathToHere.Count); ;
                         neighbor.pathToHere.Add(bestNode.pos);
@@ -157,10 +150,10 @@ public class Pathfinder : MonoBehaviour {
                     }
                 }
             }
-            foreach (Node neighbor in getdiagonalNeighboors(bestNode)) {
+            foreach (Node neighbor in GetdiagonalNeighboors(bestNode)) {
                 if (neighbor.isWater && !neighbor.visited) {
-                    if (neighbor.distance > bestNode.distance + OctileDistance(bestNode.pos, neighbor.pos)) {
-                        neighbor.distance = bestNode.distance + OctileDistance(bestNode.pos, neighbor.pos);
+                    if (neighbor.distance > bestNode.distance + Vector2Int.Distance(bestNode.pos, neighbor.pos)) {
+                        neighbor.distance = bestNode.distance + Vector2Int.Distance(bestNode.pos, neighbor.pos);
                         //workaround to not pass the list itself but a copy
                         neighbor.pathToHere = bestNode.pathToHere.GetRange(0, bestNode.pathToHere.Count); ;
                         neighbor.pathToHere.Add(bestNode.pos);
@@ -177,9 +170,9 @@ public class Pathfinder : MonoBehaviour {
         Debug.Log("couldnt find any path");
         return null;
     }
-    private static List<Node> getNeighboors(Node n) {
+    private static List<Node> GetNeighboors(Node n) {
         Vector2Int start = n.pos;
-        List<Node> backlog = new List<Node>();
+        List<Node> backlog = new();
         if (start.x < 335) {
             backlog.Add(map[start.x + 1, start.y]);
         } else {
@@ -200,14 +193,15 @@ public class Pathfinder : MonoBehaviour {
         }
         return backlog;
     }
-    private static List<Node> getdiagonalNeighboors(Node n) {
+    private static List<Node> GetdiagonalNeighboors(Node n) {
         Vector2Int start = n.pos;
-        List<Node> backlog = new List<Node>();
-        List<Vector2Int> backlogv = new List<Vector2Int>();
-        backlogv.Add(new Vector2Int(start.x + 1, start.y + 1));
-        backlogv.Add(new Vector2Int(start.x + 1, start.y - 1));
-        backlogv.Add(new Vector2Int(start.x - 1, start.y + 1));
-        backlogv.Add(new Vector2Int(start.x - 1, start.y - 1));
+        List<Node> backlog = new();
+        List<Vector2Int> backlogv = new() {
+            new Vector2Int(start.x + 1, start.y + 1),
+            new Vector2Int(start.x + 1, start.y - 1),
+            new Vector2Int(start.x - 1, start.y + 1),
+            new Vector2Int(start.x - 1, start.y - 1)
+        };
         foreach (Vector2Int pos in backlogv) {
             int x = pos.x;
             int y = pos.y;
@@ -226,24 +220,24 @@ public class Pathfinder : MonoBehaviour {
         }
         return backlog;
     }
-    private bool isWater(Color c) {
+    private bool IsWater(Color c) {
         return (c.r + c.g + c.b) < 1.6f;
     }
-    private Vector2Int logicToPixelPos(Vector2Int logicPos) {
-        Vector2Int outV = new Vector2Int(1 + logicPos.x * 4, 756 - logicPos.y * 4 - 2);
+    private Vector2Int LogicToPixelPos(Vector2Int logicPos) {
+        Vector2Int outV = new(1 + logicPos.x * 4, 756 - logicPos.y * 4 - 2);
         return outV;
     }
     private Vector2Int PixelToLogicPos(Vector2Int logicPos) {
-        Vector2Int outV = new Vector2Int((logicPos.x - 1) / 4, (logicPos.y) / 4);
+        Vector2Int outV = new((logicPos.x - 1) / 4, (logicPos.y) / 4);
         return outV;
     }
 
 
 }
 public class Node {
-    public float distance = 9999999;
-    public float guestimate = 9999999;
-    public List<Vector2Int> pathToHere = new List<Vector2Int>();
+    public float distance = float.MaxValue;
+    public float guestimate = float.MaxValue;
+    public List<Vector2Int> pathToHere = new();
     public bool isWater;
     public bool visited = false;
     public Vector2Int pos;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class CommandInterpreter {
-    public static String interprete(String input) {
+    public static String Interprete(String input) {
         input = input.Remove(0, 1); // remove > at the start
         String[] info = input.Split(' ');
         switch (info[0].ToLower()) //check name of command
@@ -27,25 +27,25 @@ public static class CommandInterpreter {
                 load,unload,send commands use the last used ship if parameter ommited";
             case "load":
                 if (info.Length == 2) {
-                    return Company.load(info[1]);
+                    return Company.Load(info[1]);
                 }
                 if (info.Length == 3) {
-                    return Company.load(info[1], info[2]);
+                    return Company.Load(info[1], info[2]);
                 }
                 if (info.Length == 4) {
-                    return Company.load(info[1], info[2], info[3]);
+                    return Company.Load(info[1], info[2], info[3]);
                 } else {
                     return "Missing or too many parameters";
                 }
             case "unload":
                 if (info.Length == 2) {
-                    return Company.unload(info[1]);
+                    return Company.Unload(info[1]);
                 }
                 if (info.Length == 3) {
-                    return Company.unload(info[1], info[2]);
+                    return Company.Unload(info[1], info[2]);
                 }
                 if (info.Length == 4) {
-                    return Company.unload(info[1], info[2], info[3]);
+                    return Company.Unload(info[1], info[2], info[3]);
                 } else {
                     return "Missing or too many parameters";
                 }
@@ -53,42 +53,42 @@ public static class CommandInterpreter {
                 if (info.Length != 2) {
                     return "Missing or too many parameters";
                 }
-                return Company.scrap(info[1]);
+                return Company.Scrap(info[1]);
             case "accept":
                 if (info.Length != 2) {
                     return "Missing or too many parameters";
                 }
-                return Company.acceptContract(info[1]);
+                return Company.AcceptContract(info[1]);
             case "distance":
                 if (info.Length != 3) {
                     return "Missing or too many parameters";
                 }
-                return Company.getDistance(info[1], info[2]);
+                return Company.GetDistance(info[1], info[2]);
             case "send":
                 if (info.Length == 2) {
-                    return Company.sendShip(info[1]);
+                    return Company.SendShip(info[1]);
                 }
                 if (info.Length == 3) {
-                    return Company.sendShip(info[1], info[2]);
+                    return Company.SendShip(info[1], info[2]);
                 } else {
                     return "Missing or too many parameters";
                 }
             case "resume":
-                Clock.Instance.startClock();
+                Clock.Instance.StartClock();
                 return "Un-paused";
             case "pause":
-                Clock.Instance.stopClock();
+                Clock.Instance.StopClock();
                 return "paused";
             case "speed":
                 if (info.Length != 2) {
                     return "Missing or too many parameters";
                 }
-                return Clock.Instance.setSpeed(info[1]);
+                return Clock.Instance.SetSpeed(info[1]);
             case "buy":
                 if (info.Length != 3) {
                     return "Missing or too many parameters";
                 } else {
-                    return Company.buyShip(info[1], info[2]);
+                    return Company.BuyShip(info[1], info[2]);
                 }
             case "exit":
 #if UNITY_STANDALONE

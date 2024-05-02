@@ -9,8 +9,8 @@ using UnityEngine.SceneManagement;
 public class Ship {
     public String name;
     public int inventorySize = 3;
-    public List<TypeOfGoods> content = new List<TypeOfGoods>();
-    private int standardPrice = 10000;
+    public List<TypeOfGoods> content = new();
+    private readonly int standardPrice = 10000;
     public int runningCosts = 0;
     public int price = 0;
     public Vector2Int pos;
@@ -19,17 +19,14 @@ public class Ship {
     public Harbour targetDock;
     private List<Vector2Int> curPath = null;
     private List<GameObject> curPathObjects = null;
-    private List<String> potentialNames = new List<string>();
-    public bool isMoving() {
-        return dock == null;
-    }
+    private readonly List<String> potentialNames = new();
     public Ship() {
         inventorySize = UnityEngine.Random.Range(1, 5);
         runningCosts = UnityEngine.Random.Range(1, 10);
         price = (int)(standardPrice * (UnityEngine.Random.Range(60f, 140f) / 100f) * inventorySize);
         string path = Application.streamingAssetsPath + "/female.txt";
         //Read the text from directly from the test.txt file
-        StreamReader reader = new StreamReader(path);
+        StreamReader reader = new(path);
         String curName = reader.ReadLine();
         while (curName != null) {
             potentialNames.Add(curName);
@@ -39,7 +36,7 @@ public class Ship {
 
         reader.Close();
     }
-    public void setPath(List<Vector2Int> newPath) {
+    public void SetPath(List<Vector2Int> newPath) {
         curPath = newPath;
         if (curPathObjects != null) {
             foreach (GameObject pathPiece in curPathObjects) {
@@ -47,7 +44,7 @@ public class Ship {
             }
         }
 
-        curPathObjects = Pathfinder.spawnPieces(curPath);
+        curPathObjects = Pathfinder.SpawnPieces(curPath);
     }
     public void Tick() {
         if (curPath != null) {
@@ -59,19 +56,19 @@ public class Ship {
                 curPath = null;
                 dock = targetDock;
                 targetDock = null;
-                unloadContracts(Company.acceptedContracts);
-                Logger.addLog("Ship " + name + " arrived at " + dock.name, Color.white);
+                UnloadContracts(Company.acceptedContracts);
+                Logger.AddLog("Ship " + name + " arrived at " + dock.name, Color.white);
             }
         }
     }
-    private void unloadContracts(List<Contract> contracts) {
+    private void UnloadContracts(List<Contract> contracts) {
         for (int y = 0; y < contracts.Count; y++) {
             if (contracts[y].targetHarbour == dock) {
                 for (int i = 0; i < contracts[y].toDeliverGoods.Count; i++) {
                     for (int x = 0; x < content.Count; x++) {
                         if (contracts[y].toDeliverGoods[i] == content[x]) {
                             content.Remove(content[x]);
-                            contracts[y].deliver(contracts[y].toDeliverGoods[i]);
+                            contracts[y].Deliver(contracts[y].toDeliverGoods[i]);
                             x--;
                             i--;
 
@@ -79,7 +76,7 @@ public class Ship {
                     }
                 }
                 if (contracts[y].toDeliverGoods.Count == 0) {
-                    Company.completeContract(contracts[y]);
+                    Company.CompleteContract(contracts[y]);
                     y--;
                 }
             }

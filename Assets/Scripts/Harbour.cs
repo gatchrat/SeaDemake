@@ -5,15 +5,15 @@ using System;
 public class Harbour {
     public String name;
     public Vector2Int pos;
-    public List<(TypeOfGoods, int)> prices = new List<(TypeOfGoods, int)>();
-    public List<int> priceTargets = new List<int>();
+    public List<(TypeOfGoods, int)> prices = new();
+    public List<int> priceTargets = new();
     public Harbour(Vector2Int position, String s) {
         name = s;
         pos = position;
         prices.Add((TypeOfGoods.Medicine, 1000));
-        initPrices();
+        InitPrices();
     }
-    public int priceOf(TypeOfGoods type) {
+    public int PriceOf(TypeOfGoods type) {
         foreach ((TypeOfGoods, int) item in prices) {
             if (item.Item1 == type) {
                 return item.Item2;
@@ -21,8 +21,8 @@ public class Harbour {
         }
         return 0;
     }
-    private void initPrices() {
-        List<TypeOfGoods> allGoods = new List<TypeOfGoods>();
+    private void InitPrices() {
+        List<TypeOfGoods> allGoods = new();
         allGoods.Add(TypeOfGoods.Food);
         allGoods.Add(TypeOfGoods.Medicine);
         allGoods.Add(TypeOfGoods.Wood);
@@ -37,7 +37,7 @@ public class Harbour {
             priceTargets.Add(UnityEngine.Random.Range(500, 2000));
         }
     }
-    public void updatePrices() {
+    public void UpdatePrices() {
         for (int i = 0; i < prices.Count; i++) {
             //adjust price 5% towards target, but atleast 20
             int newPrice = prices[i].Item2 + (int)Math.Max((float)(priceTargets[i] - prices[i].Item2) * 0.05f, (priceTargets[i] - prices[i].Item2) / Math.Abs((priceTargets[i] - prices[i].Item2)) * 20);

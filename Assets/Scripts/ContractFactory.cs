@@ -4,8 +4,8 @@ using UnityEngine;
 
 public static class ContractFactory {
     static int counter = 2;
-    public static Contract generateContract(List<Harbour> allHarbours) {
-        Contract c = new Contract();
+    public static Contract GenerateContract(List<Harbour> allHarbours) {
+        Contract c = new();
         for (int i = 0; i < Random.Range(1, 6); i++) {
             switch (Random.Range(0, 5)) {
 
@@ -33,14 +33,14 @@ public static class ContractFactory {
         counter++;
         c.targetHarbour = allHarbours[Random.Range(0, allHarbours.Count)];
         //ensure a viable day count with the unlocked harbours
-        c.daysToComplete = (int)(Random.Range(1f, 4f) * (float)Pathfinder.findPath(getRandomButNotThis(c.targetHarbour, allHarbours).pos, c.targetHarbour.pos).Count);
+        c.daysToComplete = (int)(Random.Range(1f, 4f) * (float)Pathfinder.FindPath(GetRandomButNotThis(c.targetHarbour, allHarbours).pos, c.targetHarbour.pos).Count);
         //reward scales with difficulty, but scales down the reward for easy timings
         c.reward = (int)((float)baseRewardPerPiece * (float)c.toDeliverGoods.Count * (250 / (float)c.daysToComplete));
         c.penalty = c.reward / Random.Range(1, 5);
 
         return c;
     }
-    static Harbour getRandomButNotThis(Harbour notThis, List<Harbour> allHarbours) {
+    static Harbour GetRandomButNotThis(Harbour notThis, List<Harbour> allHarbours) {
         Harbour ret = allHarbours[Random.Range(0, allHarbours.Count)];
         while (ret == notThis) {
             ret = allHarbours[Random.Range(0, allHarbours.Count)];

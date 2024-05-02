@@ -5,23 +5,21 @@ public class Clock : MonoBehaviour {
     // Start is called before the first frame update
     public float[] timeSteps;
     float timePerTickCur;
-    int curTimeStepIndex = 0;
     float curTimer;
-    int tickCount = 0;
     Boolean started = false;
     Boolean gameRunning = true;
     public static Clock Instance;
     public delegate void TickEvent();
-    public event TickEvent tick;
+    public event TickEvent Tick;
     void Awake() {
         Instance = this;
-        timePerTickCur = timeSteps[curTimeStepIndex];
+        timePerTickCur = timeSteps[0];
     }
     void Start() {
         curTimer = timePerTickCur;
     }
-    public String setSpeed(String speedString) {
-        int speed = 0;
+    public String SetSpeed(String speedString) {
+        int speed;
         try {
             speed = Int32.Parse(speedString);
         } catch {
@@ -34,17 +32,17 @@ public class Clock : MonoBehaviour {
         }
         return "Not a valid Speed";
     }
-    public static void disable() {
-        Clock.Instance.stopClock();
+    public static void Disable() {
+        Clock.Instance.StopClock();
         Clock.Instance.gameRunning = false;
     }
-    public void startClock() {
+    public void StartClock() {
         if (gameRunning) {
             started = true;
         }
 
     }
-    public void stopClock() {
+    public void StopClock() {
         started = false;
     }
     // Update is called once per frame
@@ -53,9 +51,7 @@ public class Clock : MonoBehaviour {
             curTimer -= Time.deltaTime;
             if (curTimer < 0) {
                 curTimer = timePerTickCur;
-                // TICK TOCK MF
-                tickCount++;
-                tick.Invoke();
+                Tick.Invoke();
             }
         }
 

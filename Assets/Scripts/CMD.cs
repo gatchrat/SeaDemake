@@ -6,18 +6,18 @@ using UnityEngine;
 using UnityEngine.UI;
 public class CMD : MonoBehaviour {
     private String curLine = ">";
-    private List<String> curLineHistory = new List<string>();
+    private readonly List<String> curLineHistory = new();
     private String History = "";
     private int HistoryIndex = 0;
     public TextMeshProUGUI text;
-    private int maxLines = 20;
+    private readonly int maxLines = 20;
     void Start() {
         curLineHistory.Add(">");
     }
     void Update() {
-        updateText();
+        UpdateText();
     }
-    private void updateText() {
+    private void UpdateText() {
         String[] counter = History.Split("\n");
         if (counter.Length > maxLines - 2) {
             String newHistory = "";
@@ -49,7 +49,7 @@ public class CMD : MonoBehaviour {
             } else if (evt.keyCode == KeyCode.Return) {
                 curLineHistory.Add(curLine);
                 History = History + "\n" + curLine;
-                History += "\n" + CommandInterpreter.interprete(curLine);
+                History += "\n" + CommandInterpreter.Interprete(curLine);
                 curLine = ">";
                 HistoryIndex = curLineHistory.Count;
                 return;

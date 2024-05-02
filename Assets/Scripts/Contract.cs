@@ -10,22 +10,22 @@ public class Contract {
     public int reward;
     public int penalty; //multiple of the reward, maybe half?
     public int daysToComplete;
-    public List<TypeOfGoods> toDeliverGoods = new List<TypeOfGoods>();
-    public List<TypeOfGoods> deliverdGoods = new List<TypeOfGoods>();
+    public List<TypeOfGoods> toDeliverGoods = new();
+    public List<TypeOfGoods> deliverdGoods = new();
     public String name = "uninitialized";
     public Sprite acceptedImage;
     public GameObject gui;
     public List<Sprite> images;
-    public void setAccepted() {
+    public void SetAccepted() {
         gui.transform.GetChild(9).gameObject.GetComponent<Image>().sprite = acceptedImage;
     }
-    public void deliver(TypeOfGoods good) {
+    public void Deliver(TypeOfGoods good) {
         deliverdGoods.Add(good);
         toDeliverGoods.Remove(good);
-        updateGUI();
+        UpdateGUI();
 
     }
-    public void updateGUI() {
+    public void UpdateGUI() {
         Transform Inventory = gui.transform.GetChild(4);
         for (int i = 0; i < toDeliverGoods.Count; i++) {
             switch (toDeliverGoods[i]) {

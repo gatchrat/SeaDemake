@@ -31,13 +31,13 @@ public class GameMaster : MonoBehaviour {
     public Sprite CoalImage;
     public Sprite AcceptedImage;
     public List<AudioClip> audioClips;
-    private List<GameObject> contractGUI = new List<GameObject>();
-    private List<GameObject> ownedShipsGUI = new List<GameObject>();
-    private List<GameObject> ShipsGUI = new List<GameObject>();
-    private List<GameObject> HarbourGUI = new List<GameObject>();
-    private List<GameObject> availableShipsGUI = new List<GameObject>();
-    private List<GameObject> pricesGUI = new List<GameObject>();
-    private List<int> moneyHistory = new List<int>();
+    private readonly List<GameObject> contractGUI = new();
+    private readonly List<GameObject> ownedShipsGUI = new();
+    private List<GameObject> ShipsGUI = new();
+    private List<GameObject> HarbourGUI = new();
+    private readonly List<GameObject> availableShipsGUI = new();
+    private readonly List<GameObject> pricesGUI = new();
+    private readonly List<int> moneyHistory = new();
     private int maxMoney;
     public static GameMaster Instance;
     //Assumed to be in correct order
@@ -49,11 +49,11 @@ public class GameMaster : MonoBehaviour {
         maxMoney = Company.curMoney;
         Company.ownedShips = new List<Ship>();
         Company.acceptedContracts = new List<Contract>();
-        Clock.Instance.tick += Tick;
-        Company.companyUiUpdate += updateAllUI;
+        Clock.Instance.Tick += Tick;
+        Company.CompanyUiUpdate += UpdateAllUI;
         Company.allHarbours = new List<Harbour> {
-            new Harbour(new Vector2Int(164, 56), "Hamburg"),
-            new Harbour(new Vector2Int(156, 73), "Valencia")
+            new(new Vector2Int(164, 56), "Hamburg"),
+            new(new Vector2Int(156, 73), "Valencia")
         };
         HarboursToUnlock = new List<(Harbour, int)> {
             (new Harbour(new Vector2Int(299, 146), "Sydney"), 12000),
@@ -76,7 +76,7 @@ public class GameMaster : MonoBehaviour {
 
 
         //add "tutorial" ship and contracts
-        Contract tutorialContract1 = new Contract {
+        Contract tutorialContract1 = new() {
             daysToComplete = 100,
             name = "0",
             reward = 5000,
@@ -86,7 +86,7 @@ public class GameMaster : MonoBehaviour {
         tutorialContract1.toDeliverGoods.Add(TypeOfGoods.Food);
         Company.openContracts.Add(tutorialContract1);
 
-        Contract tutorialContract2 = new Contract {
+        Contract tutorialContract2 = new() {
             daysToComplete = 100,
             name = "1",
             reward = 5000,
@@ -96,7 +96,7 @@ public class GameMaster : MonoBehaviour {
         tutorialContract2.toDeliverGoods.Add(TypeOfGoods.Medicine);
         Company.openContracts.Add(tutorialContract2);
 
-        Ship tutorialShip = new Ship {
+        Ship tutorialShip = new() {
             inventorySize = 1,
             name = "Starter",
             price = 6500,
@@ -104,53 +104,53 @@ public class GameMaster : MonoBehaviour {
         };
         Company.availableShips.Add(tutorialShip);
 
-        Company.refreshAvailableShips();
-        Company.refreshAvailableContracts();
-        regenerateHarbourUI();
-        updatePricesUI();
+        Company.RefreshAvailableShips();
+        Company.RefreshAvailableContracts();
+        RegenerateHarbourUI();
+        UpdatePricesUI();
         availableShipPrefab.SetActive(false);
         ownedShipPrefab.SetActive(false);
         HarbourPrefab.SetActive(false);
         contractPrefab.SetActive(false);
         ShipPrefab.SetActive(false);
         pricesPrefab.SetActive(false);
-        Logger.addLog("Game init complete", Color.gray);
+        Logger.AddLog("Game init complete", Color.gray);
     }
     void Tick() {
         curDay++;
         if (curDay % 25 == 0) {
-            Company.refreshAvailableShips();
+            Company.RefreshAvailableShips();
         }
         if (curDay % 20 == 0) {
-            Company.refreshAvailableContracts();
+            Company.RefreshAvailableContracts();
         }
         if (curDay % 10 == 0) {
             foreach (Harbour harbour in Company.allHarbours) {
-                harbour.updatePrices();
-                updatePricesUI();
+                harbour.UpdatePrices();
+                UpdatePricesUI();
             }
         }
         Company.Tick();
         if (HarboursToUnlock.Count > 0 && Company.curMoney > HarboursToUnlock[0].Item2) {
             Company.allHarbours.Add(HarboursToUnlock[0].Item1);
-            Logger.addLog("Unlocked new Harbour " + HarboursToUnlock[0].Item1.name, Color.green);
-            GameMaster.Instance.playAudio(AudioClipType.harbour);
+            Logger.AddLog("Unlocked new Harbour " + HarboursToUnlock[0].Item1.name, Color.green);
+            GameMaster.Instance.PlayAudio(AudioClipType.harbour);
             HarboursToUnlock.RemoveAt(0);
-            regenerateHarbourUI();
-            updatePricesUI();
+            RegenerateHarbourUI();
+            UpdatePricesUI();
         }
-        updateAllUI();
+        UpdateAllUI();
     }
-    private void updateAllUI() {
+    private void UpdateAllUI() {
 
         timeText.text = curDay.ToString();
-        updateAvailableShips();
-        updateOwnedShips();
-        updateContractUI();
-        regenerateShipUI();
-        updateMoneyUI();
+        UpdateAvailableShips();
+        UpdateOwnedShips();
+        UpdateContractUI();
+        RegenerateShipUI();
+        UpdateMoneyUI();
     }
-    private void updateMoneyUI() {
+    private void UpdateMoneyUI() {
         moneyHistory.Add(Company.curMoney);
         if (Company.curMoney > maxMoney) {
             maxMoney = Company.curMoney;
@@ -169,13 +169,13 @@ public class GameMaster : MonoBehaviour {
         moneyText.text = Company.curMoney.ToString() + "$";
         moneyText.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(LR.points[LR.points.Count - 1].x, LR.points[LR.points.Count - 1].y, 0);
     }
-    private void updateOwnedShips() {
-        List<String> ownedShips = new List<string>();
+    private void UpdateOwnedShips() {
+        List<String> ownedShips = new();
         foreach (Ship ship in Company.ownedShips) {
             ownedShips.Add(ship.name);
         }
         //check for removal
-        List<String> ownedShipsGUINames = new List<string>();
+        List<String> ownedShipsGUINames = new();
         for (int i = 0; i < ownedShipsGUI.Count; i++) {
             GameObject item = ownedShipsGUI[i];
             String name = item.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text;
@@ -240,7 +240,7 @@ public class GameMaster : MonoBehaviour {
         }
 
     }
-    private void regenerateHarbourUI() {
+    private void RegenerateHarbourUI() {
         if (HarbourGUI != null) {
             for (int i = 0; i < HarbourGUI.Count; i++) {
                 Destroy(HarbourGUI[i]);
@@ -257,7 +257,7 @@ public class GameMaster : MonoBehaviour {
             HarbourGUI.Add(curHarbourUI);
         }
     }
-    private void regenerateShipUI() {
+    private void RegenerateShipUI() {
         if (ShipsGUI != null) {
             for (int i = 0; i < ShipsGUI.Count; i++) {
                 Destroy(ShipsGUI[i]);
@@ -274,13 +274,13 @@ public class GameMaster : MonoBehaviour {
             ShipsGUI.Add(curShipUI);
         }
     }
-    private void updateAvailableShips() {
-        List<String> availableShips = new List<string>();
+    private void UpdateAvailableShips() {
+        List<String> availableShips = new();
         foreach (Ship ship in Company.availableShips) {
             availableShips.Add(ship.name);
         }
         //check for removal
-        List<String> availableShipsGUINames = new List<string>();
+        List<String> availableShipsGUINames = new();
         for (int i = 0; i < availableShipsGUI.Count; i++) {
             GameObject item = availableShipsGUI[i];
             String name = item.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text;
@@ -308,8 +308,8 @@ public class GameMaster : MonoBehaviour {
         }
 
     }
-    private void updateContractUI() {
-        List<String> ContractNames = new List<string>();
+    private void UpdateContractUI() {
+        List<String> ContractNames = new();
         foreach (Contract contract in Company.openContracts) {
             ContractNames.Add(contract.name);
         }
@@ -317,7 +317,7 @@ public class GameMaster : MonoBehaviour {
             ContractNames.Add(contract.name);
         }
         //check for removal
-        List<String> contractUINames = new List<string>();
+        List<String> contractUINames = new();
         for (int i = 0; i < contractGUI.Count; i++) {
             GameObject item = contractGUI[i];
             String name = item.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text;
@@ -342,26 +342,27 @@ public class GameMaster : MonoBehaviour {
                 newGUI.transform.GetChild(8).gameObject.GetComponent<TextMeshProUGUI>().text = contract.daysToComplete + "";
                 contract.gui = newGUI;
                 contract.acceptedImage = AcceptedImage;
-                List<Sprite> ContainerSprites = new List<Sprite>();
-                ContainerSprites.Add(emptyImage);
-                ContainerSprites.Add(CoalImage);
-                ContainerSprites.Add(FoodImage);
-                ContainerSprites.Add(IronImage);
-                ContainerSprites.Add(MedicineImage);
-                ContainerSprites.Add(WoodImage);
+                List<Sprite> ContainerSprites = new() {
+                    emptyImage,
+                    CoalImage,
+                    FoodImage,
+                    IronImage,
+                    MedicineImage,
+                    WoodImage
+                };
                 contract.images = ContainerSprites;
-                contract.updateGUI();
+                contract.UpdateGUI();
             }
         }
         //check status
     }
-    private void updatePricesUI() {
-        List<String> HarbourNames = new List<string>();
+    private void UpdatePricesUI() {
+        List<String> HarbourNames = new();
         foreach (Harbour harbour in Company.allHarbours) {
             HarbourNames.Add(harbour.name);
         }
         //check for removal
-        List<String> harbourUINames = new List<string>();
+        List<String> harbourUINames = new();
         for (int i = 0; i < pricesGUI.Count; i++) {
             GameObject item = pricesGUI[i];
             String name = item.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text;
@@ -429,7 +430,7 @@ public class GameMaster : MonoBehaviour {
 
         }
     }
-    public void playAudio(AudioClipType adc) {
+    public void PlayAudio(AudioClipType adc) {
         switch (adc) {
             case AudioClipType.scribble:
                 GetComponent<AudioSource>().clip = audioClips[0];
