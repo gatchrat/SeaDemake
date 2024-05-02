@@ -29,8 +29,7 @@ public static class CommandInterpreter {
                 }
                 if (info.Length == 4) {
                     return Company.load(info[1], info[2], info[3]);
-                }
-                else {
+                } else {
                     return "Missing or too many parameters";
                 }
 
@@ -40,8 +39,7 @@ public static class CommandInterpreter {
                 }
                 if (info.Length == 4) {
                     return Company.unload(info[1], info[2], info[3]);
-                }
-                else {
+                } else {
                     return "Missing or too many parameters";
                 }
             case "scrap":
@@ -78,8 +76,7 @@ public static class CommandInterpreter {
             case "buy":
                 if (info.Length != 3) {
                     return "Missing or too many parameters";
-                }
-                else {
+                } else {
                     return Company.buyShip(info[1], info[2]);
                 }
             case "exit":

@@ -24,8 +24,7 @@ public class Clock : MonoBehaviour {
         int speed = 0;
         try {
             speed = Int32.Parse(speedString);
-        }
-        catch {
+        } catch {
             return "Not a valid Speed";
         }
         if (speed < timeSteps.Length && speed >= 0) {

@@ -196,8 +196,7 @@ public class GameMaster : MonoBehaviour {
                 newGUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ship.name;
                 if (ship.targetDock != null) {
                     newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = "..." + ship.targetDock.name;
-                }
-                else {
+                } else {
                     newGUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = ship.dock.name;
                 }
                 newGUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = "-" + ship.runningCosts + "$";
@@ -229,15 +228,13 @@ public class GameMaster : MonoBehaviour {
                             ownedShipsGUI[i].transform.GetChild(2).GetChild(x).gameObject.GetComponent<Image>().sprite = MedicineImage;
                             break;
                     }
-                }
-                else {
+                } else {
                     ownedShipsGUI[i].transform.GetChild(2).GetChild(x).gameObject.GetComponent<Image>().sprite = emptyImage;
                 }
             }
             if (ship.targetDock != null) {
                 ownedShipsGUI[i].transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = "..." + ship.targetDock.name;
-            }
-            else {
+            } else {
                 ownedShipsGUI[i].transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = ship.dock.name;
             }
         }
@@ -403,8 +400,7 @@ public class GameMaster : MonoBehaviour {
                     }
                 }
 
-            }
-            else {
+            } else {
                 //find Objekt and set prices
                 foreach (GameObject targetUI in pricesGUI) {
                     if (harbour.name == targetUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text) {

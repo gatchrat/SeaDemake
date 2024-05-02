@@ -182,14 +182,12 @@ public class Pathfinder : MonoBehaviour {
         List<Node> backlog = new List<Node>();
         if (start.x < 335) {
             backlog.Add(map[start.x + 1, start.y]);
-        }
-        else {
+        } else {
             backlog.Add(map[0, start.y]);
         }
         if (start.x > 0) {
             backlog.Add(map[start.x - 1, start.y]);
-        }
-        else {
+        } else {
             backlog.Add(map[335, start.y]);
         }
 
@@ -221,8 +219,7 @@ public class Pathfinder : MonoBehaviour {
             }
             if (pos.y < 0 || pos.y > 188) {
 
-            }
-            else {
+            } else {
                 backlog.Add(map[x, y]);
             }
 

@@ -24,8 +24,7 @@ public class CMD : MonoBehaviour {
             for (int i = counter.Length - maxLines + 2; i < counter.Length; i++) {
                 if (i != counter.Length - 1) {
                     newHistory += counter[i] + "\n";
-                }
-                else {
+                } else {
                     newHistory += counter[i];
                 }
 
@@ -33,8 +32,7 @@ public class CMD : MonoBehaviour {
             History = newHistory;
 
             text.text = History + curLine + '_';
-        }
-        else {
+        } else {
             text.text = History + "\n" + curLine + '_';
         }
 
@@ -48,29 +46,24 @@ public class CMD : MonoBehaviour {
                     curLine = curLine.Remove(curLine.Length - 1);
                 }
                 return;
-            }
-            else if (evt.keyCode == KeyCode.Return) {
+            } else if (evt.keyCode == KeyCode.Return) {
                 curLineHistory.Add(curLine);
                 History = History + "\n" + curLine;
                 History += "\n" + CommandInterpreter.interprete(curLine);
                 curLine = ">";
                 HistoryIndex = curLineHistory.Count;
                 return;
-            }
-            else if (evt.keyCode == KeyCode.UpArrow) {
+            } else if (evt.keyCode == KeyCode.UpArrow) {
                 HistoryIndex = Math.Max(0, HistoryIndex - 1);
                 curLine = curLineHistory[HistoryIndex];
-            }
-            else if (evt.keyCode == KeyCode.DownArrow) {
+            } else if (evt.keyCode == KeyCode.DownArrow) {
                 if (HistoryIndex >= curLineHistory.Count - 1) {
                     curLine = ">";
-                }
-                else {
+                } else {
                     HistoryIndex++;
                     curLine = curLineHistory[HistoryIndex];
                 }
-            }
-            else {
+            } else {
                 char c = evt.character;
                 if (c >= 32 && c <= 126) {
                     //Debug.Log("test" + c.ToString() + "'");
@@ -78,8 +71,7 @@ public class CMD : MonoBehaviour {
                 }
 
             }
-        }
-        else if (evt.type == EventType.KeyUp) {
+        } else if (evt.type == EventType.KeyUp) {
         }
     }
 }

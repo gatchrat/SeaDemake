@@ -28,8 +28,7 @@ public static class Company {
         //never go above 8 overall contracts
         if (openContracts.Count < 6 && openContracts.Count + acceptedContracts.Count < 8) {
             openContracts.Add(ContractFactory.generateContract(allHarbours.Concat(lockedHarbours).ToList()));
-        }
-        else {
+        } else {
             for (int i = 0; i < Math.Min(openContracts.Count - 1, 2); i++) {
                 openContracts[UnityEngine.Random.Range(0, openContracts.Count)] = ContractFactory.generateContract(allHarbours);
             }
@@ -71,11 +70,9 @@ public static class Company {
         }
         if (toBuy == null) {
             return "No Ship with that Name found";
-        }
-        else if (toBuy.price > curMoney) {
+        } else if (toBuy.price > curMoney) {
             return "Not enough funds available";
-        }
-        else {
+        } else {
             Harbour toSpawn = null;
             foreach (Harbour harbour in allHarbours) {
                 if (harbour.name.ToLower() == harbourName.ToLower()) {
@@ -204,8 +201,7 @@ public static class Company {
             if (count < 1) {
                 return "Not a valid Count";
             }
-        }
-        catch {
+        } catch {
             return "Not a valid Count";
         }
         //decode good
@@ -272,8 +268,7 @@ public static class Company {
             if (count < 1) {
                 return "Not a valid Count";
             }
-        }
-        catch {
+        } catch {
             return "Not a valid Count";
         }
         //decode good

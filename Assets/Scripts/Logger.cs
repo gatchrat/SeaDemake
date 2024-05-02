@@ -21,8 +21,7 @@ public class Logger : MonoBehaviour {
             for (int i = counter.Length - maxLines + 2; i < counter.Length; i++) {
                 if (i != counter.Length - 1) {
                     newHistory += counter[i] + "\n";
-                }
-                else {
+                } else {
                     newHistory += counter[i];
                 }
 
