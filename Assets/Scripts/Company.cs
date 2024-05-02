@@ -30,9 +30,8 @@ public static class Company {
         if (openContracts.Count < 6 && openContracts.Count + acceptedContracts.Count < 8) {
             openContracts.Add(ContractFactory.GenerateContract(allHarbours.Concat(lockedHarbours).ToList()));
         } else {
-            for (int i = 0; i < Math.Min(openContracts.Count - 1, 2); i++) {
-                openContracts[UnityEngine.Random.Range(0, openContracts.Count)] = ContractFactory.GenerateContract(allHarbours);
-            }
+            openContracts.RemoveAt(0);
+            openContracts.Add(ContractFactory.GenerateContract(allHarbours.Concat(lockedHarbours).ToList()));
         }
         CompanyUiUpdate.Invoke();
     }
