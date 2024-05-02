@@ -23,7 +23,7 @@ public static class CommandInterpreter {
                 pause - pauses the game, commands are still enabled
                 resume - un-pauses
                 exit - closes the game
-                goods = wood,iron,coal,medicine,food
+                goods = (w)ood,(i)ron,(c)oal,(m)edicine,(f)ood
                 load,unload,send commands use the last used ship if parameter ommited";
             case "load":
                 if (info.Length == 2) {

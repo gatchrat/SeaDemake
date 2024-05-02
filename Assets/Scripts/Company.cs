@@ -216,20 +216,20 @@ public static class Company {
         }
         //decode good
         TypeOfGoods targetGood;
-        switch (goodName.ToLower()) {
-            case "food":
+        switch (goodName.ToLower().First()) {
+            case 'f':
                 targetGood = TypeOfGoods.Food;
                 break;
-            case "medicine":
+            case 'm':
                 targetGood = TypeOfGoods.Medicine;
                 break;
-            case "wood":
+            case 'w':
                 targetGood = TypeOfGoods.Wood;
                 break;
-            case "iron":
+            case 'i':
                 targetGood = TypeOfGoods.Iron;
                 break;
-            case "coal":
+            case 'c':
                 targetGood = TypeOfGoods.Coal;
                 break;
             default:
@@ -284,20 +284,20 @@ public static class Company {
         }
         //decode good
         TypeOfGoods targetGood;
-        switch (goodName.ToLower()) {
-            case "food":
+        switch (goodName.ToLower().First()) {
+            case 'f':
                 targetGood = TypeOfGoods.Food;
                 break;
-            case "medicine":
+            case 'm':
                 targetGood = TypeOfGoods.Medicine;
                 break;
-            case "wood":
+            case 'w':
                 targetGood = TypeOfGoods.Wood;
                 break;
-            case "iron":
+            case 'i':
                 targetGood = TypeOfGoods.Iron;
                 break;
-            case "coal":
+            case 'c':
                 targetGood = TypeOfGoods.Coal;
                 break;
             default:
