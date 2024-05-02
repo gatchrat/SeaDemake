@@ -22,7 +22,7 @@ public class Ship {
     private readonly List<String> potentialNames = new();
     public Ship() {
         inventorySize = UnityEngine.Random.Range(1, 5);
-        runningCosts = UnityEngine.Random.Range(1, 10);
+        runningCosts = UnityEngine.Random.Range(1, 5);
         price = (int)(standardPrice * (UnityEngine.Random.Range(60f, 140f) / 100f) * inventorySize);
         string path = Application.streamingAssetsPath + "/female.txt";
         //Read the text from directly from the test.txt file
