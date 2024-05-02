@@ -22,8 +22,13 @@ public static class CommandInterpreter {
                 distance (harbour) (harbour) - Lists the distance in days between the two harbours
                 pause - pauses the game, commands are still enabled
                 resume - un-pauses
-                exit - closes the game";
+                exit - closes the game
+                goods = wood,iron,coal,medicine,food
+                load,unload,send commands use the last used ship if parameter ommited";
             case "load":
+                if (info.Length == 2) {
+                    return Company.load(info[1]);
+                }
                 if (info.Length == 3) {
                     return Company.load(info[1], info[2]);
                 }
@@ -32,8 +37,10 @@ public static class CommandInterpreter {
                 } else {
                     return "Missing or too many parameters";
                 }
-
             case "unload":
+                if (info.Length == 2) {
+                    return Company.unload(info[1]);
+                }
                 if (info.Length == 3) {
                     return Company.unload(info[1], info[2]);
                 }
@@ -58,10 +65,14 @@ public static class CommandInterpreter {
                 }
                 return Company.getDistance(info[1], info[2]);
             case "send":
-                if (info.Length != 3) {
+                if (info.Length == 2) {
+                    return Company.sendShip(info[1]);
+                }
+                if (info.Length == 3) {
+                    return Company.sendShip(info[1], info[2]);
+                } else {
                     return "Missing or too many parameters";
                 }
-                return Company.sendShip(info[1], info[2]);
             case "resume":
                 Clock.Instance.startClock();
                 return "Un-paused";

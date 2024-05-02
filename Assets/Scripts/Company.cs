@@ -14,6 +14,7 @@ public static class Company {
     public static int curMoney = 0;
     public delegate void companyUiUpdateEvent();
     public static event companyUiUpdateEvent companyUiUpdate;
+    private static Ship lastUsedShip;
     public static void refreshAvailableShips() {
         availableShips.Add(new Ship());
         if (availableShips.Count > 9) {
@@ -89,6 +90,7 @@ public static class Company {
             toBuy.dock = toSpawn;
             companyUiUpdate.Invoke();
             GameMaster.Instance.playAudio(AudioClipType.clapping);
+            lastUsedShip = toBuy;
             return "Ship successfully aquired";
         }
     }
@@ -133,6 +135,7 @@ public static class Company {
         toSend.setPath(Pathfinder.findPath(toSend.pos, toDock.pos));
         companyUiUpdate.Invoke();
         GameMaster.Instance.playAudio(AudioClipType.troet);
+        lastUsedShip = toSend;
         return "Ship successfully send";
 
     }
@@ -252,6 +255,7 @@ public static class Company {
         curMoney += price * count;
         companyUiUpdate.Invoke();
         GameMaster.Instance.playAudio(AudioClipType.truck);
+        lastUsedShip = toUnload;
         return "The goods where sold successfully";
     }
     public static String load(String shipname, String goodName, String countAsString) {
@@ -316,15 +320,36 @@ public static class Company {
         curMoney -= price * count;
         companyUiUpdate.Invoke();
         GameMaster.Instance.playAudio(AudioClipType.truck);
+        lastUsedShip = toLoad;
         return "The Ship was loaded and Capital removed";
     }
-    public static String load(String shipname, String goodName) {
-
-        return load(shipname, goodName, "1");
+    public static String load(String shipnameOrGoodname, String goodNameOrCount) {
+        try {
+            int count = Int32.Parse(goodNameOrCount);
+            return load(lastUsedShip.name, shipnameOrGoodname, goodNameOrCount);
+        } catch {
+            return load(shipnameOrGoodname, goodNameOrCount, "1");
+        }
     }
-    public static String unload(String shipname, String goodName) {
+    public static String unload(String shipnameOrGoodname, String goodNameOrCount) {
+        try {
+            int count = Int32.Parse(goodNameOrCount);
+            return unload(lastUsedShip.name, shipnameOrGoodname, goodNameOrCount);
+        } catch {
+            return unload(shipnameOrGoodname, goodNameOrCount, "1");
+        }
+    }
+    public static String load(String goodName) {
 
-        return unload(shipname, goodName, "1");
+        return load(lastUsedShip.name, goodName, "1");
+    }
+    public static String unload(String goodName) {
+
+        return unload(lastUsedShip.name, goodName, "1");
+    }
+    public static String sendShip(String harbourName) {
+
+        return sendShip(lastUsedShip.name, harbourName);
     }
 }
 
