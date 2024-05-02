@@ -26,7 +26,7 @@ public static class ContractFactory {
                     break;
             }
         }
-        float baseRewardPerPiece = Random.Range(1500, 4000);
+        float baseRewardPerPiece = Random.Range(2000, 6000);
 
 
         c.name = counter + "";

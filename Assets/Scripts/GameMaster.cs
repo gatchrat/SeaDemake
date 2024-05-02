@@ -118,10 +118,10 @@ public class GameMaster : MonoBehaviour {
     }
     void Tick() {
         curDay++;
-        if (curDay % 25 == 0) {
+        if (curDay % 50 == 0) {
             Company.RefreshAvailableShips();
         }
-        if (curDay % 20 == 0) {
+        if (curDay % 40 == 0) {
             Company.RefreshAvailableContracts();
         }
         if (curDay % 10 == 0) {
