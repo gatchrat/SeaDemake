@@ -4,6 +4,9 @@ A little game inspired by games like TransOcean, with the twist that everything 
 The wares are referenced by "wood","food","medicine","iron","coal"
 ![fullView](https://github.com/gatchrat/SeaDemake/assets/60071174/85b1d33f-daf5-4a87-a72d-2399335fdc5d)
 
+## Download
+Get a working version from [here](https://gatchrat.itch.io/seademake) or create a new Unity 5 projekt and try to build it yourself.
+
 ## Credit
 The list of ship names is taken from [here](https://github.com/increpare/name-generator/blob/master/female)
 ### Audio
