@@ -9,7 +9,7 @@ public class Clock : MonoBehaviour {
     float curTimer;
     int tickCount = 0;
     Boolean started = false;
-    Boolean enabled = true;
+    Boolean gameRunning = true;
     public static Clock Instance;
     public delegate void TickEvent();
     public event TickEvent tick;
@@ -37,10 +37,10 @@ public class Clock : MonoBehaviour {
     }
     public static void disable() {
         Clock.Instance.stopClock();
-        Clock.Instance.enabled = false;
+        Clock.Instance.gameRunning = false;
     }
     public void startClock() {
-        if (enabled) {
+        if (gameRunning) {
             started = true;
         }
 
