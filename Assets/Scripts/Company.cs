@@ -114,6 +114,9 @@ public static class Company {
         if (toSend == null) {
             return "No Ship with that Name found";
         }
+        if (toSend.targetDock != null) {
+            return "Ship is already moving";
+        }
         Harbour toDock = null;
         foreach (Harbour harbour in allHarbours) {
             if (harbour.name.ToLower() == harbourName.ToLower()) {
@@ -122,6 +125,9 @@ public static class Company {
         }
         if (toDock == null) {
             return "No Harbour with that Name found";
+        }
+        if (toSend.dock == toDock) {
+            return "Ship is already at the target Dock";
         }
         toSend.targetDock = toDock;
         toSend.setPath(Pathfinder.findPath(toSend.pos, toDock.pos));
