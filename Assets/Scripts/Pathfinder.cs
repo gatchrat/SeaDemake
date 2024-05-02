@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class Pathfinder : MonoBehaviour {
@@ -57,11 +55,14 @@ public class Pathfinder : MonoBehaviour {
         return pathObjects;
     }
     static float Heuristic(Vector2Int from, Vector2Int to) {
-        int xDiff = Math.Abs(from.x - to.x);
-        int yDiff = Math.Abs(from.y - to.y);
-        float heur = Math.Min(xDiff, yDiff) * 1.5f;
-        heur += (Math.Max(xDiff, yDiff) - Math.Min(xDiff, yDiff));
-        return heur + 3f;
+        float normal = Vector2Int.Distance(from, to);
+        float wrapped;
+        if (from.x >= to.x) {
+            wrapped = 335 - from.x + to.x;
+        } else {
+            wrapped = 335 - to.x + from.x;
+        }
+        return Math.Min(normal, wrapped);
     }
     public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int end) {
         if (!map[start.x, start.y].isWater || !map[end.x, end.y].isWater) {
@@ -83,8 +84,8 @@ public class Pathfinder : MonoBehaviour {
         //add neighboors
         foreach (Node neighbor in GetNeighboors(map[start.x, start.y])) {
             if (neighbor.isWater && !neighbor.visited) {
-                if (neighbor.distance > map[start.x, start.y].distance - Vector2Int.Distance(map[start.x, start.y].pos, neighbor.pos)) {
-                    neighbor.distance = map[start.x, start.y].distance + Vector2Int.Distance(map[start.x, start.y].pos, neighbor.pos);
+                if (neighbor.distance > map[start.x, start.y].distance + 1) {
+                    neighbor.distance = map[start.x, start.y].distance + 1;
                     //workaround to not pass the list itself but a copy
                     neighbor.pathToHere = map[start.x, start.y].pathToHere.GetRange(0, map[start.x, start.y].pathToHere.Count); ;
                     neighbor.pathToHere.Add(map[start.x, start.y].pos);
@@ -98,8 +99,8 @@ public class Pathfinder : MonoBehaviour {
         }
         foreach (Node neighbor in GetdiagonalNeighboors(map[start.x, start.y])) {
             if (neighbor.isWater && !neighbor.visited) {
-                if (neighbor.distance > map[start.x, start.y].distance - Vector2Int.Distance(map[start.x, start.y].pos, neighbor.pos)) {
-                    neighbor.distance = map[start.x, start.y].distance + Vector2Int.Distance(map[start.x, start.y].pos, neighbor.pos);
+                if (neighbor.distance > map[start.x, start.y].distance + 1.414f) {
+                    neighbor.distance = map[start.x, start.y].distance + 1.414f;
                     //workaround to not pass the list itself but a copy
                     neighbor.pathToHere = map[start.x, start.y].pathToHere.GetRange(0, map[start.x, start.y].pathToHere.Count); ;
                     neighbor.pathToHere.Add(map[start.x, start.y].pos);
@@ -138,8 +139,8 @@ public class Pathfinder : MonoBehaviour {
             }
             foreach (Node neighbor in GetNeighboors(bestNode)) {
                 if (neighbor.isWater && !neighbor.visited) {
-                    if (neighbor.distance > bestNode.distance + Vector2Int.Distance(bestNode.pos, neighbor.pos)) {
-                        neighbor.distance = bestNode.distance + Vector2Int.Distance(bestNode.pos, neighbor.pos);
+                    if (neighbor.distance > bestNode.distance + 1) {
+                        neighbor.distance = bestNode.distance + 1;
                         //workaround to not pass the list itself but a copy
                         neighbor.pathToHere = bestNode.pathToHere.GetRange(0, bestNode.pathToHere.Count); ;
                         neighbor.pathToHere.Add(bestNode.pos);
@@ -152,8 +153,8 @@ public class Pathfinder : MonoBehaviour {
             }
             foreach (Node neighbor in GetdiagonalNeighboors(bestNode)) {
                 if (neighbor.isWater && !neighbor.visited) {
-                    if (neighbor.distance > bestNode.distance + Vector2Int.Distance(bestNode.pos, neighbor.pos)) {
-                        neighbor.distance = bestNode.distance + Vector2Int.Distance(bestNode.pos, neighbor.pos);
+                    if (neighbor.distance > bestNode.distance + 1.414f) {
+                        neighbor.distance = bestNode.distance + 1.414f;
                         //workaround to not pass the list itself but a copy
                         neighbor.pathToHere = bestNode.pathToHere.GetRange(0, bestNode.pathToHere.Count); ;
                         neighbor.pathToHere.Add(bestNode.pos);
