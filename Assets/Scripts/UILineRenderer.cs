@@ -1,10 +1,10 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+[RequireComponent(typeof(CanvasRenderer))]
 public class UILineRenderer : Graphic {
     public Vector2[] points;
-
     public float thickness = 10f;
     public bool center = true;
 
@@ -78,6 +78,14 @@ public class UILineRenderer : Graphic {
     /// <returns>The angle required to rotate vertex towards target</returns>
     private float RotatePointTowards(Vector2 vertex, Vector2 target) {
         return (float)(Mathf.Atan2(target.y - vertex.y, target.x - vertex.x) * (180 / Mathf.PI));
+    }
+    /// <summary>
+    /// Adds a new Point to the List of Points
+    /// </summary>
+    /// <param name="point">Point to add</param>
+    public void AddCoordinate(Vector2 point) {
+        ArrayUtility.Add(ref points, point);
+        this.SetAllDirty();
     }
 }
 
