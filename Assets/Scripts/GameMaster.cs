@@ -167,7 +167,7 @@ public class GameMaster : MonoBehaviour {
         LR.points = points;
         LR.SetAllDirty();
         moneyText.text = Company.curMoney.ToString() + "$";
-        moneyText.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(LR.points[LR.points.Count - 1].x, LR.points[LR.points.Count - 1].y, 0);
+        moneyText.transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(LR.points[LR.points.Count - 1].x - 45, LR.points[LR.points.Count - 1].y, 0);
     }
     private void UpdateOwnedShips() {
         List<String> ownedShips = new();
