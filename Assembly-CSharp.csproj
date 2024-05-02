@@ -69,7 +69,6 @@
     <Compile Include="Assets\Scripts\Goods.cs" />
     <Compile Include="Assets\Scripts\Pathfinder.cs" />
     <Compile Include="Assets\Scripts\AudioClipType.cs" />
-    <Compile Include="Assets\Scripts\UILineRenderEditor.cs" />
     <Compile Include="Assets\Scripts\Ship.cs" />
     <Compile Include="Assets\Scripts\BackgroundRenderer.cs" />
     <Compile Include="Assets\Scripts\GameMaster.cs" />

@@ -155,7 +155,7 @@ public class GameMaster : MonoBehaviour {
         if (Company.curMoney > maxMoney) {
             maxMoney = Company.curMoney;
         }
-        Vector2[] points = new Vector2[moneyHistory.Count];
+        List<Vector2> points = new(moneyHistory.Count);
         float maxX = 1344;
         float maxY = 100;
         float width = maxX / (moneyHistory.Count - 1);
@@ -167,7 +167,7 @@ public class GameMaster : MonoBehaviour {
         LR.points = points;
         LR.SetAllDirty();
         moneyText.text = Company.curMoney.ToString() + "$";
-        moneyText.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(LR.points[LR.points.Length - 1].x, LR.points[LR.points.Length - 1].y, 0);
+        moneyText.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(LR.points[LR.points.Count - 1].x, LR.points[LR.points.Count - 1].y, 0);
     }
     private void updateOwnedShips() {
         List<String> ownedShips = new List<string>();

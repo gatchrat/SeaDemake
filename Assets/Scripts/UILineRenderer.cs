@@ -1,20 +1,21 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CanvasRenderer))]
 public class UILineRenderer : Graphic {
-    public Vector2[] points;
+    public List<Vector2> points = new();
     public float thickness = 10f;
     public bool center = true;
 
     protected override void OnPopulateMesh(VertexHelper vh) {
         vh.Clear();
 
-        if (points.Length < 2)
+        if (points.Count < 2)
             return;
 
-        for (int i = 0; i < points.Length - 1; i++) {
+        for (int i = 0; i < points.Count - 1; i++) {
             // Create a line segment between the next two points
             CreateLineSegment(points[i], points[i + 1], vh);
 
@@ -84,7 +85,7 @@ public class UILineRenderer : Graphic {
     /// </summary>
     /// <param name="point">Point to add</param>
     public void AddCoordinate(Vector2 point) {
-        ArrayUtility.Add(ref points, point);
+        points.Add(point);
         this.SetAllDirty();
     }
 }
