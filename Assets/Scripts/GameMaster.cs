@@ -408,19 +408,19 @@ public class GameMaster : MonoBehaviour {
                         foreach ((TypeOfGoods, int) item in harbour.prices) {
                             switch (item.Item1) {
                                 case TypeOfGoods.Coal:
-                                    targetUI.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                                    targetUI.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "";
                                     break;
                                 case TypeOfGoods.Food:
-                                    targetUI.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                                    targetUI.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "";
                                     break;
                                 case TypeOfGoods.Iron:
-                                    targetUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                                    targetUI.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "";
                                     break;
                                 case TypeOfGoods.Medicine:
-                                    targetUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                                    targetUI.transform.GetChild(4).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "";
                                     break;
                                 case TypeOfGoods.Wood:
-                                    targetUI.transform.GetChild(5).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "$";
+                                    targetUI.transform.GetChild(5).gameObject.GetComponent<TextMeshProUGUI>().text = item.Item2 + "";
                                     break;
                             }
                         }
