@@ -1,7 +1,7 @@
 # SeaDemake
 A little game inspired by games like TransOcean, with the twist that everything is rendered down to its most basic elements. Buy ships, buy/sell wares and complete contracts, nothing else. Get the best deals, find the most efficient routes and grow a shipping empire. There is no tutorial, no buttons, just you, the console and the one Screen. How much money can you earn? Can you unlock all 14 harbours?
 ## Additional gameplay info
-The wares are reference by "wood","food","medicine","iron","coal"
+The wares are referenced by "wood","food","medicine","iron","coal"
 ![fullView](https://github.com/gatchrat/SeaDemake/assets/60071174/85b1d33f-daf5-4a87-a72d-2399335fdc5d)
 
 ## Credit

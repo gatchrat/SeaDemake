@@ -155,13 +155,13 @@ public class GameMaster : MonoBehaviour {
         if (Company.curMoney > maxMoney) {
             maxMoney = Company.curMoney;
         }
-        List<Vector2> points = new(moneyHistory.Count);
+        List<Vector2> points = new();
         float maxX = 1344;
         float maxY = 100;
         float width = maxX / (moneyHistory.Count - 1);
         float curX = 0;
         for (int i = 0; i < moneyHistory.Count; i++) {
-            points[i] = new Vector2(curX, -8 - maxY + (float)moneyHistory[i] / (float)maxMoney * maxY);
+            points.Add(new Vector2(curX, -8 - maxY + (float)moneyHistory[i] / (float)maxMoney * maxY));
             curX += width;
         }
         LR.points = points;

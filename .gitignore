@@ -9,3 +9,7 @@ UserSettings/
 ProjectSettings/
 .vscode/
 .editorconfig
+sample.unity
+*.csproj
+*.sln
+*.asset
